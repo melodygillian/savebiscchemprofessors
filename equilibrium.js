@@ -289,7 +289,7 @@ function showRescueChoice() {
     container.innerHTML = `
         <div class="screen choice-screen">
             <h1 style="color: #1e40af; margin-bottom: 30px;">🔧 MELODY AND LUCY! THEY ARE BACK! 🔧</h1>
-            <p style="font-size: 1.5em; margin-bottom: 15px; font-weight: bold;">She found the glass cutter!</p>
+            <p style="font-size: 1.5em; margin-bottom: 15px; font-weight: bold;">They found the glass cutter!</p>
             <p style="font-size: 1.1em; color: #374151; margin-bottom: 20px;">
                 You kept their toxicity at only ${gameState.toxicity}% - they're in relatively good shape! 
                 Melody and Lucy can cut them free now...
