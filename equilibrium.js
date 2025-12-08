@@ -161,7 +161,7 @@ function showIntro() {
                 
                 <p>Adam (panicking): "Find something to cut us out!"</p>
                 
-                <p>Your classmate Melody and Lucy run off to find tools, but it'll take <strong>10 rounds</strong> before she returns. You need to manipulate the equilibrium to minimize toxic product formation!</p>
+                <p>Your dear, lovely, and smart classmates Melody and Lucy run off to find tools, but it'll take <strong>10 rounds</strong> before they return. You need to manipulate the equilibrium to minimize toxic product formation!</p>
                 
                 <p style="text-align: center; font-size: 1.3em; font-weight: bold; color: #7c2d12; margin-top: 30px;">
                     Keep their toxicity below 70% until rescue arrives!
