@@ -161,7 +161,7 @@ function showIntro() {
                 
                 <p>Adam (panicking): "Find something to cut us out!"</p>
                 
-                <p>Your classmate Sarah runs off to find tools, but it'll take <strong>10 rounds</strong> before she returns. You need to manipulate the equilibrium to minimize toxic product formation!</p>
+                <p>Your classmate Melody and Lucy run off to find tools, but it'll take <strong>10 rounds</strong> before she returns. You need to manipulate the equilibrium to minimize toxic product formation!</p>
                 
                 <p style="text-align: center; font-size: 1.3em; font-weight: bold; color: #7c2d12; margin-top: 30px;">
                     Keep their toxicity below 70% until rescue arrives!
@@ -292,7 +292,7 @@ function showRescueChoice() {
             <p style="font-size: 1.5em; margin-bottom: 15px; font-weight: bold;">She found the glass cutter!</p>
             <p style="font-size: 1.1em; color: #374151; margin-bottom: 20px;">
                 You kept their toxicity at only ${gameState.toxicity}% - they're in relatively good shape! 
-                Sarah can cut them free now...
+                Melody and Lucy can cut them free now...
             </p>
             <div style="font-size: 4em; margin: 30px 0;">👨‍🔬❓👨‍🔬</div>
             <p style="font-size: 1.3em; font-weight: bold; color: #1f2937; margin-bottom: 30px;">
@@ -358,7 +358,7 @@ function showAbandoned() {
     container.innerHTML = `
         <div class="screen abandoned-screen">
             <h1 style="color: #6b21a8; font-size: 3em; margin-bottom: 20px;">😱 YOU MONSTER! 😱</h1>
-            <p style="font-size: 1.5em; margin-bottom: 15px;">You told Sarah to leave them?!</p>
+            <p style="font-size: 1.5em; margin-bottom: 15px;">You told Melody and Lucy to leave them?!</p>
             <p style="font-size: 1.1em; color: #374151; margin-bottom: 20px;">
                 Professors Elmore and Matthews remain sealed in the beaker forever, 
                 eternally shifting between reactants and products, 
@@ -391,7 +391,7 @@ function showSick() {
             <h1 style="color: #c2410c; font-size: 3em; margin-bottom: 20px;">🤢 SEVERELY POISONED 🤢</h1>
             <p style="font-size: 1.5em; margin-bottom: 15px;">They're alive... barely!</p>
             <p style="font-size: 1.1em; color: #374151; margin-bottom: 20px;">
-                Sarah cut them free just in time, but with ${gameState.toxicity}% toxicity, 
+                Melody and Lucy cut them free just in time, but with ${gameState.toxicity}% toxicity, 
                 Professors Elmore and Matthews spent the next three weeks in the hospital. 
                 They're permanently banned from handling sealed glassware.
             </p>
@@ -424,7 +424,7 @@ function showDeath() {
             <p style="font-size: 1.5em; margin-bottom: 15px; color: #fca5a5;">Toxicity reached 100%!</p>
             <p style="font-size: 1.1em; color: #d1d5db; margin-bottom: 20px;">
                 The equilibrium shifted too far toward the toxic products. 
-                Professors Elmore and Matthews succumbed to chemical poisoning before Sarah could cut them free...
+                Professors Elmore and Matthews succumbed to chemical poisoning before Melody and Lucy could cut them free...
             </p>
             <div style="font-size: 5em; margin: 20px 0;">💀🧪💀</div>
             <div class="professor-images">
