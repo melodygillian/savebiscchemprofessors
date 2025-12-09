@@ -137,14 +137,14 @@ function showIntro() {
             
             <div class="story-text">
                 <p style="font-size: 1.3em; color: #dc2626; font-weight: bold; text-align: center; margin-bottom: 20px;">
-                    "Nonono, I see you need to work harder on Chemistry!" 
+                    "Nonono no biology for you, I see you need to work harder on Chemistry!" 
                 </p>
                 
-                <p>It was another day in <strong>CHEM 116</strong> when catastrophe struck... again.</p>
+                <p>It was another day in <strong>CHEM 116</strong> when an incident struck... again.</p>
                 
                 <p><strong>Professor Don Elmore</strong> and <strong>Professor Adam Matthews</strong> were demonstrating chemical equilibrium to the class. Don had just finished saying, "And remember, Le Chatelier's principle states that—"</p>
                 
-                <p>Adam interrupted: "Hey Don, should this beaker be sealed THIS tight?"</p>
+                <p>Adam interrupted: "Hey Don, should this beaker actually be sealed THIS tight???????????"</p>
                 
                 <p class="highlight">💨 FFFFFFFFFSSSSSSHHHHH! 💨</p>
                 
@@ -161,7 +161,7 @@ function showIntro() {
                 
                 <p>Adam (panicking): "Find something to cut us out!"</p>
                 
-                <p>Your dear, lovely, and smart classmates Melody and Lucy run off to find tools, but it'll take <strong>10 rounds</strong> before they return. You need to manipulate the equilibrium to minimize toxic product formation!</p>
+                <p>Your <strong>dear, lovely, and smart classmates Melody and Lucy</strong> run off to find tools, but it'll take <strong>10 rounds</strong> before they return. You need to manipulate the equilibrium to minimize toxic product formation!</p>
                 
                 <p style="text-align: center; font-size: 1.3em; font-weight: bold; color: #7c2d12; margin-top: 30px;">
                     Keep their toxicity below 70% until rescue arrives!
@@ -329,8 +329,7 @@ function showVictory() {
             <p style="font-size: 1.5em; margin-bottom: 15px;">You mastered equilibrium!</p>
             <p style="font-size: 1.1em; color: #374151; margin-bottom: 20px;">
                 With only ${gameState.toxicity}% toxicity, Professors Elmore and Matthews are perfectly fine! 
-                They immediately started planning next semester's syllabus. 
-                (Though they're removing the "sealed beaker" demonstration.)
+                They immediately remove the equilibrium content from the BISC/CHEM final and will add 10 points to everyone's final!
             </p>
             <div style="font-size: 5em; margin: 20px 0;">👨‍🔬✨👨‍🔬</div>
             <div class="professor-images">
@@ -370,13 +369,13 @@ function showAbandoned() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" style="filter: grayscale(100%);" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #6b7280; margin: 15px 0;">
-                Don (from inside the glass): "K = [Products]/[Reactants]... but our K... is now... zero..."
+                Don (from inside the glass): "Why is the equilibrium not equilibriuming... Why is my student not studenting..."
             </p>
             <p style="font-style: italic; color: #6b7280; margin-bottom: 20px;">
-                Adam (also trapped): "This violates... every principle... I ever taught..."
+                Adam (also trapped): "This violates... every principle... I've ever taught..."
             </p>
             <p style="font-size: 0.9em; color: #dc2626; font-weight: bold; margin: 20px 0;">
-                (Somewhere, Le Chatelier is rolling in his grave. And it's YOUR fault.)
+                (Somewhere, Le Chatelier is rolling in his grave. And it's YOUR fault. The Honor Code is fully disappointed in you.)
             </p>
             <button onclick="startGame()" style="background: #7c3aed;">Fix Your Horrible Mistake</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
@@ -393,15 +392,15 @@ function showSick() {
             <p style="font-size: 1.1em; color: #374151; margin-bottom: 20px;">
                 Melody and Lucy cut them free just in time, but with ${gameState.toxicity}% toxicity, 
                 Professors Elmore and Matthews spent the next three weeks in the hospital. 
-                They're permanently banned from handling sealed glassware.
-            </p>
+                Maybe this means no final for BISC/CHEM 116, but this is NOT the optimal way to keep you A grade.
+                </p>
             <div style="font-size: 5em; margin: 20px 0;">🤮👨‍🔬👨‍🔬🤮</div>
             <div class="professor-images">
                 <img src="elmore.png" alt="Professor Elmore" class="professor-img" onerror="this.style.display='none'">
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #6b7280; margin: 15px 0;">
-                Adam (from hospital bed): "Never... using... equilibrium... in class... again..."
+                Adam (from hospital bed): "Never... use... equilibrium... in your life... again..."
             </p>
             <p style="font-style: italic; color: #6b7280; margin-bottom: 20px;">
                 Don (also hospitalized): "My liver hates you."
@@ -432,7 +431,7 @@ function showDeath() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" style="filter: grayscale(100%);" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #d1d5db; margin: 20px 0;">
-                "Le Chatelier... would be... disappointed..." - Don's last words
+                "Le Chatelier... would be... disappointed..." - Don and Adam's last words
             </p>
             <div style="background: #7f1d1d; border: 2px solid #991b1b; border-radius: 10px; padding: 15px; margin: 20px 0;">
                 <p style="font-weight: bold; color: #fca5a5;">Final Toxicity: ${gameState.toxicity}%</p>
