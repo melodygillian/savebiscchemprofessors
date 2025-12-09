@@ -36,6 +36,38 @@ let gameState = {
 
 const clamp = (val) => Math.max(0, Math.min(100, val));
 
+// Calculate overall stability based on all resources
+function calculateStability() {
+    const avg = (gameState.light + gameState.dcpip + gameState.nadp + gameState.thylakoids + gameState.atp) / 5;
+    const minResource = Math.min(gameState.light, gameState.dcpip, gameState.nadp, gameState.thylakoids, gameState.atp);
+    // Weighted towards the lowest resource (if one is critical, stability is critical)
+    return Math.floor((avg * 0.4) + (minResource * 0.6));
+}
+
+// Get qualitative feedback based on actual resource levels
+function getResourceHints() {
+    const hints = [];
+    
+    if (gameState.light < 30) hints.push("🌑 It's getting dark in here...");
+    else if (gameState.light > 80) hints.push("☀️ Bright light flooding the chloroplast!");
+    
+    if (gameState.dcpip < 30) hints.push("💧 DCPIP levels are low - the dye is being reduced!");
+    else if (gameState.dcpip > 80) hints.push("💧 Plenty of oxidized DCPIP available!");
+    
+    if (gameState.nadp < 30) hints.push("⚛️ Running out of electron acceptors!");
+    else if (gameState.nadp > 80) hints.push("⚛️ NADP⁺ is abundant!");
+    
+    if (gameState.thylakoids < 30) hints.push("🧬 Membrane integrity compromised!");
+    else if (gameState.thylakoids > 80) hints.push("🧬 Thylakoid membranes looking healthy!");
+    
+    if (gameState.atp < 30) hints.push("🔋 Energy levels critically low!");
+    else if (gameState.atp > 80) hints.push("🔋 ATP production is strong!");
+    
+    if (hints.length === 0) hints.push("⚖️ Systems appear balanced...");
+    
+    return hints;
+}
+
 function showIntro() {
     const container = document.getElementById('game-container');
     container.innerHTML = `
@@ -73,6 +105,10 @@ function showIntro() {
             
             <button onclick="startGame()">🚀 Start the Rescue Mission!</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
+            
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: Learn your Photosynthesis BISC/CHEMers! 🌿
+            </div>
         </div>
     `;
 }
@@ -125,6 +161,21 @@ function nextTurn() {
 function showGameScreen() {
     const container = document.getElementById('game-container');
     const catastrophicClass = gameState.currentEvent.isCatastrophic ? 'catastrophic' : '';
+    const stability = calculateStability();
+    const hints = getResourceHints();
+    
+    let stabilityColor = '#22c55e';
+    let stabilityText = 'STABLE';
+    if (stability < 30) {
+        stabilityColor = '#ef4444';
+        stabilityText = 'CRITICAL';
+    } else if (stability < 50) {
+        stabilityColor = '#f97316';
+        stabilityText = 'UNSTABLE';
+    } else if (stability < 70) {
+        stabilityColor = '#eab308';
+        stabilityText = 'MODERATE';
+    }
     
     container.innerHTML = `
         <div class="screen">
@@ -142,12 +193,26 @@ function showGameScreen() {
             </div>
             
             <div class="resources-panel">
-                <h3 style="margin-bottom: 20px; color: #1f2937; font-size: 1.3em;">Resource Levels</h3>
-                ${renderResource('☀️', 'Light', gameState.light, 'light')}
-                ${renderResource('💧', 'DCPIP', gameState.dcpip, 'dcpip')}
-                ${renderResource('⚛️', 'NADP⁺', gameState.nadp, 'nadp')}
-                ${renderResource('🧬', 'Thylakoids', gameState.thylakoids, 'thylakoids')}
-                ${renderResource('🔋', 'ATP', gameState.atp, 'atp')}
+                <h3 style="margin-bottom: 20px; color: #1f2937; font-size: 1.3em;">Chloroplast Status</h3>
+                
+                <div style="margin-bottom: 25px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-weight: 600; color: #374151;">Overall Stability</span>
+                        <span style="font-weight: bold; color: ${stabilityColor}; font-size: 1.2em;">${stabilityText}</span>
+                    </div>
+                    <div class="resource-bar-container">
+                        <div class="resource-bar" style="width: ${stability}%; background: linear-gradient(90deg, #ef4444, #f97316, #eab308, #22c55e);"></div>
+                    </div>
+                </div>
+                
+                <div style="background: #f9fafb; border-left: 4px solid #3b82f6; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                    <h4 style="color: #1e40af; margin-bottom: 10px; font-size: 1.1em;">📊 System Observations:</h4>
+                    ${hints.map(hint => `<div style="margin: 8px 0; color: #374151;">• ${hint}</div>`).join('')}
+                </div>
+                
+                <div style="margin-top: 15px; padding: 10px; background: #fef3c7; border-radius: 8px; font-size: 0.9em; color: #92400e;">
+                    💡 <strong>Tip:</strong> Read the event carefully and think about what each resource does in photosynthesis!
+                </div>
             </div>
             
             <div class="actions-panel">
@@ -161,22 +226,9 @@ function showGameScreen() {
                     <button class="action-btn btn-rest" onclick="takeAction('rest')">⏸️ Rest</button>
                 </div>
             </div>
-        </div>
-    `;
-}
-
-function renderResource(icon, label, value, type) {
-    return `
-        <div class="resource-item">
-            <div class="resource-header">
-                <div class="resource-label">
-                    <span class="resource-icon">${icon}</span>
-                    <span>${label}</span>
-                </div>
-                <span class="resource-value">${value}%</span>
-            </div>
-            <div class="resource-bar-container">
-                <div class="resource-bar bar-${type}" style="width: ${value}%"></div>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: Learn your Photosynthesis BISC/CHEMers! 🌿
             </div>
         </div>
     `;
@@ -217,8 +269,12 @@ function showRescueChoice() {
                 </button>
             </div>
             <p style="font-size: 0.8em; color: #6b7280; margin-top: 20px; font-style: italic;">
-                (Seriously though, who would choose no? What kind of person are you?)
+                (Seriously though, who would choose no? What kind of INSANE CRAZY person are you?)
             </p>
+            
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: Learn your Photosynthesis BISC/CHEMers! 🌿
+            </div>
         </div>
     `;
 }
@@ -251,6 +307,10 @@ function showVictory() {
             </p>
             <button onclick="startGame()">Play Again</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
+            
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: Learn your Photosynthesis BISC/CHEMers! 🌿
+            </div>
         </div>
     `;
 }
@@ -275,10 +335,14 @@ function showAbandoned() {
                 "We... we thought you cared about photosynthesis..." - Don & Adam, echoing through the thylakoid membrane
             </p>
             <p style="font-size: 0.9em; color: #dc2626; font-weight: bold; margin: 20px 0;">
-                (You monster. They had families. They had dreams. They had a 2pm lecture to teach.)
+                (You monster. They had families. They had dreams. They had 8:30 am lectures to teach and post-labs to grade.)
             </p>
             <button onclick="startGame()" style="background: #7c3aed;">Undo Your Terrible Decision</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
+            
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: Learn your Photosynthesis BISC/CHEMers! 🌿
+            </div>
         </div>
     `;
 }
@@ -299,10 +363,14 @@ function showGameOver() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #6b7280; margin: 20px 0;">
-                "We should have labeled that button..." - Don & Adam, faintly echoing from the thylakoid membrane
+                "We will not teach photosynthesis againnnnnnnn" - Don & Adam, faintly echoing from the thylakoid membrane
             </p>
             <button onclick="startGame()">Try Again</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
+            
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: Learn your Photosynthesis BISC/CHEMers! 🌿
+            </div>
         </div>
     `;
 }
