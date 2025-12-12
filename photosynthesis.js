@@ -167,27 +167,45 @@ function startGame() {
         water: 50,
         thylakoids: 50,
         atp: 50,
-        turn: 0,
+        turn: 1,
         currentEvent: null,
-        eventQueue: shuffledEvents,
+        eventQueue: shuffledEvents,  // Make sure this is set!
         lastActionCorrect: null
     };
-    nextTurn();
+    
+    // Add a small delay to ensure state is set
+    setTimeout(() => {
+        nextTurn();
+    }, 10);
 }
 
 function nextTurn() {
+    // Check game over FIRST
     if (gameState.dcpip <= 0 || gameState.water <= 0 || 
         gameState.thylakoids <= 0 || gameState.atp <= 0) {
         showGameOver();
         return;
     }
     
+    // Check win condition
     if (gameState.turn > 10) {
         showRescueChoice();
         return;
     }
     
+    // Get next event from queue - MAKE SURE IT EXISTS
+    if (!gameState.eventQueue || gameState.eventQueue.length === 0) {
+        console.error("Event queue is empty!");
+        return;
+    }
+    
     const event = gameState.eventQueue[gameState.turn - 1];
+    
+    if (!event) {
+        console.error("No event found for turn", gameState.turn);
+        return;
+    }
+    
     gameState.currentEvent = event;
     
     showGameScreen();
