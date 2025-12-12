@@ -3,52 +3,52 @@ const PHOTOSYNTHESIS_EVENTS = [
     title: "Membrane depolarization by Elmore Lab!", 
     desc: "Professor Elmore had an antimicrobial peptide in his pocket and it disrupted the membrane! Protons are flowing all over the place, the proton motive force is decreasing, and ATP synthase is slowing down!", 
     atp: -20,
-    correctAction: 'thylakoids'
+    correctActions: ['thylakoids']
   },
   { 
     title: "DCPIP running low!", 
     desc: "Almost all of the DCPIP is used up! Photosynthesis is slowing down!", 
     dcpip: -25,
-    correctAction: 'dcpip'
+    correctActions: ['dcpip']
   },
   { 
     title: "Gotta fill up water bottles at Leaky Beaker…", 
     desc: "The professors breathed too much and there's not much water left - PSII slows down!", 
     water: -20,
     atp: -10,
-    correctAction: 'water'
+    correctActions: ['water']
   },
   { 
     title: "Hey Bro, Chill!", 
     desc: "It is Boston's winter, what are you expecting?? Kinetics slow down at low temperatures!", 
     atp: -15,
-    correctAction: 'heat'
+    correctActions: ['heat']
   },
   { 
     title: "PSII damage from shiny personality", 
     desc: "The bright light from Prof. Elmore and Matthews' shiny personalities damage the PSII reaction center!", 
     atp: -15,
     thylakoids: -10,
-    correctAction: 'transcription'
+    correctActions: ['transcription']
   },
   { 
     title: "Help the Poor Chloroplast!", 
     desc: "Chlorophyll degrading under the stress of BISC/CHEM Final!", 
     thylakoids: -20,
-    correctAction: 'thylakoids'
+    correctActions: ['thylakoids']
   },
   { 
-    title: "Clogged ATP synthase!!!!!", 
+    title: "He Clogged ATP synthase!!!!!", 
     desc: "Prof Matthews was mistaken for a proton and got swept up into ATP synthase!", 
     atp: -25,
-    correctAction: 'transcription'
+    correctActions: ['transcription']
   },
   { 
     title: "THE Sweet Hawaii Dream", 
     desc: "Prof. Matthews reminisces about Hawaii, suddenly the light intensity increases!", 
     water: -15,
     dcpip: -15,
-    correctAction: 'water'
+    correctActions: ['water', 'dcpip']
   },
   { 
     title: "OMG it's 116 Student Office Hour Time", 
@@ -56,20 +56,13 @@ const PHOTOSYNTHESIS_EVENTS = [
     atp: 10,
     dcpip: -15,
     water: -15,
-    correctAction: 'thylakoids'
+    correctActions: ['thylakoids', 'water', 'dcpip']
   },
   { 
     title: "See?! Caffeine is NOT good for you!", 
     desc: "Prof. Elmore brought his periodic table coffee cup with him, trips on some water molecules and spills his coffee everywhere! The caffeine accepts the surrounding protons and decreases the proton motive force.", 
     atp: -30,
-    correctAction: 'water'
-  },
-  { 
-    title: "⚠️ CATASTROPHIC SYSTEM FAILURE", 
-    desc: "Everything is going wrong at once! The chloroplast is in chaos!", 
-    all: -15, 
-    isCatastrophic: true,
-    correctAction: 'thylakoids'
+    correctActions: ['water']
   }
 ];
 
@@ -79,10 +72,22 @@ let gameState = {
     thylakoids: 50,
     atp: 50,
     turn: 1,
-    currentEvent: null
+    currentEvent: null,
+    eventQueue: [],
+    lastActionCorrect: null
 };
 
 const clamp = (val) => Math.max(0, Math.min(100, val));
+
+// Shuffle array function
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
 
 function calculateStability() {
     const avg = (gameState.dcpip + gameState.water + gameState.thylakoids + gameState.atp) / 4;
@@ -156,6 +161,9 @@ function showIntro() {
 }
 
 function startGame() {
+    // Shuffle events and create queue
+    const shuffledEvents = shuffleArray(PHOTOSYNTHESIS_EVENTS);
+    
     gameState = {
         dcpip: 50,
         water: 50,
@@ -163,6 +171,7 @@ function startGame() {
         atp: 50,
         turn: 1,
         currentEvent: null,
+        eventQueue: shuffledEvents,
         lastActionCorrect: null
     };
     nextTurn();
@@ -180,27 +189,18 @@ function nextTurn() {
         return;
     }
     
-    const event = PHOTOSYNTHESIS_EVENTS[Math.floor(Math.random() * PHOTOSYNTHESIS_EVENTS.length)];
+    // Get next event from queue
+    const event = gameState.eventQueue[gameState.turn - 1];
     gameState.currentEvent = event;
     
-    if (event.all) {
-        gameState.dcpip = clamp(gameState.dcpip + event.all);
-        gameState.water = clamp(gameState.water + event.all);
-        gameState.thylakoids = clamp(gameState.thylakoids + event.all);
-        gameState.atp = clamp(gameState.atp + event.all);
-    } else {
-        if (event.dcpip) gameState.dcpip = clamp(gameState.dcpip + event.dcpip);
-        if (event.water) gameState.water = clamp(gameState.water + event.water);
-        if (event.thylakoids) gameState.thylakoids = clamp(gameState.thylakoids + event.thylakoids);
-        if (event.atp) gameState.atp = clamp(gameState.atp + event.atp);
-    }
+    // Reset last action feedback
+    gameState.lastActionCorrect = null;
     
     showGameScreen();
 }
 
 function showGameScreen() {
     const container = document.getElementById('game-container');
-    const catastrophicClass = gameState.currentEvent.isCatastrophic ? 'catastrophic' : '';
     const stability = calculateStability();
     const hints = getResourceHints();
     
@@ -218,9 +218,9 @@ function showGameScreen() {
     }
     
     const feedbackHtml = gameState.lastActionCorrect === true 
-        ? '<div style="background: #d1fae5; border: 2px solid #10b981; padding: 15px; border-radius: 10px; margin-bottom: 20px; animation: fadeIn 0.5s;"><span style="font-size: 1.5em;">✅</span> <strong style="color: #065f46;">Great choice! You understood the biochemistry!</strong></div>'
+        ? '<div style="background: #d1fae5; border: 2px solid #10b981; padding: 15px; border-radius: 10px; margin-bottom: 20px; animation: fadeIn 0.5s;"><span style="font-size: 1.5em;">✅</span> <strong style="color: #065f46;">OH YEA! Here's our BISC/CHEM 116 genius out here</strong></div>'
         : gameState.lastActionCorrect === false
-        ? '<div style="background: #fee2e2; border: 2px solid #ef4444; padding: 15px; border-radius: 10px; margin-bottom: 20px; animation: fadeIn 0.5s;"><span style="font-size: 1.5em;">❌</span> <strong style="color: #991b1b;">That wasn\'t the optimal choice... Think about what the event affected!</strong></div>'
+        ? '<div style="background: #fee2e2; border: 2px solid #ef4444; padding: 15px; border-radius: 10px; margin-bottom: 20px; animation: fadeIn 0.5s;"><span style="font-size: 1.5em;">❌</span> <strong style="color: #991b1b;">What... How many times were you sleeping in lecture...</strong></div>'
         : '';
     
     container.innerHTML = `
@@ -235,9 +235,9 @@ function showGameScreen() {
             
             ${feedbackHtml}
             
-            <div class="event-box ${catastrophicClass}">
-                <div class="event-title ${catastrophicClass}">${gameState.currentEvent.isCatastrophic ? '🚨' : '⚡'} ${gameState.currentEvent.title}</div>
-                <div class="event-desc ${catastrophicClass}">${gameState.currentEvent.desc}</div>
+            <div class="event-box">
+                <div class="event-title">⚡ ${gameState.currentEvent.title}</div>
+                <div class="event-desc">${gameState.currentEvent.desc}</div>
             </div>
             
             <div class="resources-panel">
@@ -283,12 +283,13 @@ function showGameScreen() {
 
 function takeAction(type) {
     // Check if correct action
-    const correctAction = gameState.currentEvent.correctAction;
-    gameState.lastActionCorrect = (type === correctAction);
+    const correctActions = gameState.currentEvent.correctActions;
+    gameState.lastActionCorrect = correctActions.includes(type);
     
-    // Apply bonus if correct
-    const bonus = gameState.lastActionCorrect ? 20 : 15;
+    // Apply bonus if correct (bigger bonus to counteract event damage)
+    const bonus = gameState.lastActionCorrect ? 30 : 20;
     
+    // Apply the action FIRST (before event consequences shown in next turn)
     if (type === 'dcpip') {
         gameState.dcpip = clamp(gameState.dcpip + bonus);
     } else if (type === 'water') {
@@ -301,6 +302,13 @@ function takeAction(type) {
         gameState.thylakoids = clamp(gameState.thylakoids + bonus/2);
         gameState.atp = clamp(gameState.atp + bonus/2);
     }
+    
+    // NOW apply the event consequences
+    const event = gameState.currentEvent;
+    if (event.dcpip) gameState.dcpip = clamp(gameState.dcpip + event.dcpip);
+    if (event.water) gameState.water = clamp(gameState.water + event.water);
+    if (event.thylakoids) gameState.thylakoids = clamp(gameState.thylakoids + event.thylakoids);
+    if (event.atp) gameState.atp = clamp(gameState.atp + event.atp);
     
     gameState.turn++;
     
@@ -426,7 +434,7 @@ function showGameOver() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #6b7280; margin: 20px 0;">
-                "We will not teach photosynthesis againnnnnnnn" - Prof Elmore & Matthews, faintly echoing from the thylakoid membrane
+                "Remeber to water us and DONT LEAVE US HERE FOR WINTER BREAK..." - Prof Elmore & Matthews, faintly echoing from the thylakoid membrane
             </p>
             <button onclick="startGame()">Try Again</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
