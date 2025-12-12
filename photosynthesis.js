@@ -1,33 +1,81 @@
 const PHOTOSYNTHESIS_EVENTS = [
-  { title: "PSII Excitation Spike", desc: "A burst of sunlight excites chlorophyll molecules in PSII!", light: 20 },
-  { title: "Water Splitting Surge", desc: "PSII splits water faster than usual!", nadp: 10, atp: 10 },
-  { title: "Water Limitation", desc: "Water levels drop — PSII slows dramatically.", atp: -10, nadp: -10 },
-  { title: "ETC Backup", desc: "Electrons accumulate — not enough NADP⁺ to accept them.", nadp: -20, atp: -5 },
-  { title: "Efficient ETC Through Cytochrome Complex", desc: "The proton pump is working optimally!", atp: 20 },
-  { title: "Proton Gradient Leak", desc: "Thylakoid membrane temporarily leaks protons!", atp: -25 },
-  { title: "ATP Synthase Acceleration", desc: "High PMF (proton motive force) increases ATP production!", atp: 20 },
-  { title: "ATP Synthase Inhibition", desc: "A transient inhibitor binds ATP synthase!", atp: -20 },
-  { title: "PSI Overexcitation", desc: "PSI reduces NADP⁺ to NADPH at maximum rate!", nadp: 20 },
-  { title: "Cyclic Photophosphorylation Mode", desc: "PSI switches to cyclic flow (no NADPH produced).", atp: 15, nadp: -10 },
-  { title: "Thylakoid Membrane Tear", desc: "Structural damage compromises the membrane!", thylakoids: -20, atp: -15 },
-  { title: "Pigment Bleaching", desc: "Chlorophyll is degrading under stress!", light: -15 },
-  { title: "Pigment Repair Mechanism", desc: "Dynamic pigment turnover restores function!", light: 10 },
-  { title: "DCPIP Reduction Faster Than Expected", desc: "The dye accepts electrons rapidly!", dcpip: -15, nadp: 10 },
-  { title: "DCPIP Oxidized Addition", desc: "Fresh oxidized dye is added to the system!", dcpip: 20 },
-  { title: "Heat Stress to Thylakoids", desc: "Rising temperature denatures PSII/PSI proteins!", thylakoids: -10, atp: -10 },
-  { title: "Cold Slowdown", desc: "Enzyme kinetics slow dramatically at low temperature!", atp: -15, nadp: -5 },
-  { title: "NADP⁺ Surge", desc: "A fresh supply of electron acceptors arrives!", nadp: 20 },
-  { title: "NADP⁺ Consumption Spike", desc: "Calvin Cycle activity pulls electrons out faster!", nadp: -20 },
-  { title: "PSII Damage from Excess Light", desc: "High light intensity damages the PSII reaction center!", thylakoids: -10, light: -10 },
-  { title: "⚠️ CATASTROPHIC SYSTEM FAILURE", desc: "Multiple systems are failing simultaneously!", all: -15, isCatastrophic: true },
-  { title: "⚠️ MEMBRANE DEPOLARIZATION", desc: "Sudden proton leakage across all membranes!", atp: -30, thylakoids: -15, isCatastrophic: true },
-  { title: "⚠️ REACTIVE OXYGEN SPECIES BURST", desc: "Free radicals are damaging everything!", light: -20, thylakoids: -15, nadp: -10, isCatastrophic: true }
+  { 
+    title: "Membrane depolarization by Elmore Lab!", 
+    desc: "Professor Elmore had an antimicrobial peptide in his pocket and it disrupted the membrane! Protons are flowing all over the place, the proton motive force is decreasing, and ATP synthase is slowing down!", 
+    atp: -20,
+    correctAction: 'thylakoids'
+  },
+  { 
+    title: "DCPIP running low!", 
+    desc: "Almost all of the DCPIP is used up! Photosynthesis is slowing down!", 
+    dcpip: -25,
+    correctAction: 'dcpip'
+  },
+  { 
+    title: "Gotta fill up water bottles at Leaky Beaker…", 
+    desc: "The professors breathed too much and there's not much water left - PSII slows down!", 
+    water: -20,
+    atp: -10,
+    correctAction: 'water'
+  },
+  { 
+    title: "Hey Bro, Chill!", 
+    desc: "It is Boston's winter, what are you expecting?? Kinetics slow down at low temperatures!", 
+    atp: -15,
+    correctAction: 'heat'
+  },
+  { 
+    title: "PSII damage from shiny personality", 
+    desc: "The bright light from Prof. Elmore and Matthews' shiny personalities damage the PSII reaction center!", 
+    atp: -15,
+    thylakoids: -10,
+    correctAction: 'transcription'
+  },
+  { 
+    title: "Help the Poor Chloroplast!", 
+    desc: "Chlorophyll degrading under the stress of BISC/CHEM Final!", 
+    thylakoids: -20,
+    correctAction: 'thylakoids'
+  },
+  { 
+    title: "Clogged ATP synthase!!!!!", 
+    desc: "Prof Matthews was mistaken for a proton and got swept up into ATP synthase!", 
+    atp: -25,
+    correctAction: 'transcription'
+  },
+  { 
+    title: "THE Sweet Hawaii Dream", 
+    desc: "Prof. Matthews reminisces about Hawaii, suddenly the light intensity increases!", 
+    water: -15,
+    dcpip: -15,
+    correctAction: 'water'
+  },
+  { 
+    title: "OMG it's 116 Student Office Hour Time", 
+    desc: "Too many students pile into the chloroplast at once.", 
+    atp: 10,
+    dcpip: -15,
+    water: -15,
+    correctAction: 'thylakoids'
+  },
+  { 
+    title: "See?! Caffeine is NOT good for you!", 
+    desc: "Prof. Elmore brought his periodic table coffee cup with him, trips on some water molecules and spills his coffee everywhere! The caffeine accepts the surrounding protons and decreases the proton motive force.", 
+    atp: -30,
+    correctAction: 'water'
+  },
+  { 
+    title: "⚠️ CATASTROPHIC SYSTEM FAILURE", 
+    desc: "Everything is going wrong at once! The chloroplast is in chaos!", 
+    all: -15, 
+    isCatastrophic: true,
+    correctAction: 'thylakoids'
+  }
 ];
 
 let gameState = {
-    light: 50,
     dcpip: 50,
-    nadp: 50,
+    water: 50,
     thylakoids: 50,
     atp: 50,
     turn: 1,
@@ -36,26 +84,20 @@ let gameState = {
 
 const clamp = (val) => Math.max(0, Math.min(100, val));
 
-// Calculate overall stability based on all resources
 function calculateStability() {
-    const avg = (gameState.light + gameState.dcpip + gameState.nadp + gameState.thylakoids + gameState.atp) / 5;
-    const minResource = Math.min(gameState.light, gameState.dcpip, gameState.nadp, gameState.thylakoids, gameState.atp);
-    // Weighted towards the lowest resource (if one is critical, stability is critical)
+    const avg = (gameState.dcpip + gameState.water + gameState.thylakoids + gameState.atp) / 4;
+    const minResource = Math.min(gameState.dcpip, gameState.water, gameState.thylakoids, gameState.atp);
     return Math.floor((avg * 0.4) + (minResource * 0.6));
 }
 
-// Get qualitative feedback based on actual resource levels
 function getResourceHints() {
     const hints = [];
     
-    if (gameState.light < 30) hints.push("🌑 It's getting dark in here...");
-    else if (gameState.light > 80) hints.push("☀️ Bright light flooding the chloroplast!");
-    
-    if (gameState.dcpip < 30) hints.push("💧 DCPIP levels are low - the dye is being reduced!");
+    if (gameState.dcpip < 30) hints.push("💧 DCPIP levels are critically low!");
     else if (gameState.dcpip > 80) hints.push("💧 Plenty of oxidized DCPIP available!");
     
-    if (gameState.nadp < 30) hints.push("⚛️ Running out of electron acceptors!");
-    else if (gameState.nadp > 80) hints.push("⚛️ NADP⁺ is abundant!");
+    if (gameState.water < 30) hints.push("💦 Water shortage detected!");
+    else if (gameState.water > 80) hints.push("💦 Water levels are good!");
     
     if (gameState.thylakoids < 30) hints.push("🧬 Membrane integrity compromised!");
     else if (gameState.thylakoids > 80) hints.push("🧬 Thylakoid membranes looking healthy!");
@@ -79,11 +121,11 @@ function showIntro() {
                     "Nonono, I see you need to work harder on Biology!" 
                 </p>
                 
-                <p>It was just another Tuesday morning in <strong>BISC/CHEM 116</strong> when disaster struck.</p>
+                <p>It was a Tuesday morning in <strong>BISC/CHEM 116</strong> when disaster struck.</p>
                 
                 <p><strong>Professor Don Elmore</strong> and <strong>Professor Adam Matthews</strong> were demonstrating the Hill reaction—showing students how isolated chloroplasts can reduce DCPIP when exposed to light. Everything was going perfectly.</p>
                 
-                <p>Then Adam said, "Hey Don, what does this big red button do?"</p>
+                <p>Then Prof. Matthews said, "Hey Don, what does this big red button do?"</p>
                 
                 <p>Don replied, "Oh that? That's the—<strong>WAIT, DON'T PRESS—</strong>"</p>
                 
@@ -115,19 +157,19 @@ function showIntro() {
 
 function startGame() {
     gameState = {
-        light: 50,
         dcpip: 50,
-        nadp: 50,
+        water: 50,
         thylakoids: 50,
         atp: 50,
         turn: 1,
-        currentEvent: null
+        currentEvent: null,
+        lastActionCorrect: null
     };
     nextTurn();
 }
 
 function nextTurn() {
-    if (gameState.light <= 0 || gameState.dcpip <= 0 || gameState.nadp <= 0 || 
+    if (gameState.dcpip <= 0 || gameState.water <= 0 || 
         gameState.thylakoids <= 0 || gameState.atp <= 0) {
         showGameOver();
         return;
@@ -142,15 +184,13 @@ function nextTurn() {
     gameState.currentEvent = event;
     
     if (event.all) {
-        gameState.light = clamp(gameState.light + event.all);
         gameState.dcpip = clamp(gameState.dcpip + event.all);
-        gameState.nadp = clamp(gameState.nadp + event.all);
+        gameState.water = clamp(gameState.water + event.all);
         gameState.thylakoids = clamp(gameState.thylakoids + event.all);
         gameState.atp = clamp(gameState.atp + event.all);
     } else {
-        if (event.light) gameState.light = clamp(gameState.light + event.light);
         if (event.dcpip) gameState.dcpip = clamp(gameState.dcpip + event.dcpip);
-        if (event.nadp) gameState.nadp = clamp(gameState.nadp + event.nadp);
+        if (event.water) gameState.water = clamp(gameState.water + event.water);
         if (event.thylakoids) gameState.thylakoids = clamp(gameState.thylakoids + event.thylakoids);
         if (event.atp) gameState.atp = clamp(gameState.atp + event.atp);
     }
@@ -177,6 +217,12 @@ function showGameScreen() {
         stabilityText = 'MODERATE';
     }
     
+    const feedbackHtml = gameState.lastActionCorrect === true 
+        ? '<div style="background: #d1fae5; border: 2px solid #10b981; padding: 15px; border-radius: 10px; margin-bottom: 20px; animation: fadeIn 0.5s;"><span style="font-size: 1.5em;">✅</span> <strong style="color: #065f46;">Great choice! You understood the biochemistry!</strong></div>'
+        : gameState.lastActionCorrect === false
+        ? '<div style="background: #fee2e2; border: 2px solid #ef4444; padding: 15px; border-radius: 10px; margin-bottom: 20px; animation: fadeIn 0.5s;"><span style="font-size: 1.5em;">❌</span> <strong style="color: #991b1b;">That wasn\'t the optimal choice... Think about what the event affected!</strong></div>'
+        : '';
+    
     container.innerHTML = `
         <div class="screen">
             <div class="game-header">
@@ -186,6 +232,8 @@ function showGameScreen() {
                     <div class="turn-number">${gameState.turn}/10</div>
                 </div>
             </div>
+            
+            ${feedbackHtml}
             
             <div class="event-box ${catastrophicClass}">
                 <div class="event-title ${catastrophicClass}">${gameState.currentEvent.isCatastrophic ? '🚨' : '⚡'} ${gameState.currentEvent.title}</div>
@@ -211,19 +259,18 @@ function showGameScreen() {
                 </div>
                 
                 <div style="margin-top: 15px; padding: 10px; background: #fef3c7; border-radius: 8px; font-size: 0.9em; color: #92400e;">
-                    💡 <strong>Tip:</strong> Read the event carefully and think about what each resource does in photosynthesis!
+                    💡 <strong>Tip:</strong> Read the event carefully and think about what got affected!
                 </div>
             </div>
             
             <div class="actions-panel">
                 <h3 class="actions-title">Choose Your Action</h3>
                 <div class="action-buttons">
-                    <button class="action-btn btn-light" onclick="takeAction('light')">☀️ Add Light</button>
                     <button class="action-btn btn-dcpip" onclick="takeAction('dcpip')">💧 Add DCPIP</button>
-                    <button class="action-btn btn-nadp" onclick="takeAction('nadp')">⚛️ Add NADP⁺</button>
+                    <button class="action-btn btn-light" onclick="takeAction('water')">💦 Add H₂O</button>
+                    <button class="action-btn btn-rest" onclick="takeAction('heat')">🔥 Add Heat</button>
                     <button class="action-btn btn-thylakoids" onclick="takeAction('thylakoids')">🧬 Add Thylakoids</button>
-                    <button class="action-btn btn-atp" onclick="takeAction('atp')">🔋 Add ATP</button>
-                    <button class="action-btn btn-rest" onclick="takeAction('rest')">⏸️ Rest</button>
+                    <button class="action-btn btn-nadp" onclick="takeAction('transcription')">📝 Add Transcription Factors</button>
                 </div>
             </div>
             
@@ -235,8 +282,24 @@ function showGameScreen() {
 }
 
 function takeAction(type) {
-    if (type !== 'rest') {
-        gameState[type] = clamp(gameState[type] + 15);
+    // Check if correct action
+    const correctAction = gameState.currentEvent.correctAction;
+    gameState.lastActionCorrect = (type === correctAction);
+    
+    // Apply bonus if correct
+    const bonus = gameState.lastActionCorrect ? 20 : 15;
+    
+    if (type === 'dcpip') {
+        gameState.dcpip = clamp(gameState.dcpip + bonus);
+    } else if (type === 'water') {
+        gameState.water = clamp(gameState.water + bonus);
+    } else if (type === 'heat') {
+        gameState.atp = clamp(gameState.atp + bonus);
+    } else if (type === 'thylakoids') {
+        gameState.thylakoids = clamp(gameState.thylakoids + bonus);
+    } else if (type === 'transcription') {
+        gameState.thylakoids = clamp(gameState.thylakoids + bonus/2);
+        gameState.atp = clamp(gameState.atp + bonus/2);
     }
     
     gameState.turn++;
@@ -303,7 +366,7 @@ function showVictory() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #6b7280; margin: 20px 0;">
-                "You saved us from the quantum void! Thank you!" - Don & Adam
+                "You saved us from the quantum void! Thank you!" - Prof. Elmore & Matthews
             </p>
             <button onclick="startGame()">Play Again</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
@@ -332,7 +395,7 @@ function showAbandoned() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" style="filter: grayscale(100%);" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #6b7280; margin: 15px 0;">
-                "We... we thought you cared about photosynthesis..." - Don & Adam, echoing through the thylakoid membrane
+                "We... we thought you cared about photosynthesis..." - Prof. Elmore & Matthews, echoing through the thylakoid membrane
             </p>
             <p style="font-size: 0.9em; color: #dc2626; font-weight: bold; margin: 20px 0;">
                 (You monster. They had families. They had dreams. They had 8:30 am lectures to teach and post-labs to grade.)
@@ -363,7 +426,7 @@ function showGameOver() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #6b7280; margin: 20px 0;">
-                "We will not teach photosynthesis againnnnnnnn" - Don & Adam, faintly echoing from the thylakoid membrane
+                "We will not teach photosynthesis againnnnnnnn" - Prof Elmore & Matthews, faintly echoing from the thylakoid membrane
             </p>
             <button onclick="startGame()">Try Again</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
