@@ -162,47 +162,31 @@ function showIntro() {
 function startGame() {
     const shuffledEvents = shuffleArray(PHOTOSYNTHESIS_EVENTS);
     
-    gameState = {
-        dcpip: 50,
-        water: 50,
-        thylakoids: 50,
-        atp: 50,
-        turn: 1,
-        currentEvent: shuffledEvents[0],  // SET IT IMMEDIATELY
-        eventQueue: shuffledEvents,
-        lastActionCorrect: null
-    };
+    gameState.dcpip = 50;
+    gameState.water = 50;
+    gameState.thylakoids = 50;
+    gameState.atp = 50;
+    gameState.turn = 1;
+    gameState.eventQueue = shuffledEvents;
+    gameState.currentEvent = shuffledEvents[0];
+    gameState.lastActionCorrect = null;
     
-    showGameScreen();  // Call directly instead of nextTurn
+    showGameScreen();
 }
 
 function nextTurn() {
-    // Check game over FIRST
     if (gameState.dcpip <= 0 || gameState.water <= 0 || 
         gameState.thylakoids <= 0 || gameState.atp <= 0) {
         showGameOver();
         return;
     }
     
-    // Check win condition
     if (gameState.turn > 10) {
         showRescueChoice();
         return;
     }
     
-    // Get next event from queue - MAKE SURE IT EXISTS
-    if (!gameState.eventQueue || gameState.eventQueue.length === 0) {
-        console.error("Event queue is empty!");
-        return;
-    }
-    
     const event = gameState.eventQueue[gameState.turn - 1];
-    
-    if (!event) {
-        console.error("No event found for turn", gameState.turn);
-        return;
-    }
-    
     gameState.currentEvent = event;
     
     showGameScreen();
