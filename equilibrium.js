@@ -140,11 +140,11 @@ function showIntro() {
                     "Nonono no biology for you, I see you need to work harder on Chemistry!" 
                 </p>
                 
-                <p>It was another day in <strong>CHEM 116</strong> when an incident struck... again.</p>
+                <p>It was a Monday in <strong>BISC/CHEM 116</strong> when an incident struck...</p>
                 
-                <p><strong>Professor Don Elmore</strong> and <strong>Professor Adam Matthews</strong> were demonstrating chemical equilibrium to the class. Don had just finished saying, "And remember, Le Chatelier's principle states that—"</p>
+                <p><strong>Professor Don Elmore</strong> and <strong>Professor Adam Matthews</strong> were demonstrating chemical equilibrium to the class. Prof. Elmore had just finished saying, "And remember, Le Chatelier's principle states that—"</p>
                 
-                <p>Adam interrupted: "Hey Don, should this beaker actually be sealed THIS tight???????????"</p>
+                <p>Prof。 Matthews interrupted: "Hey Don, should this beaker actually be sealed THIS tight???????????"</p>
                 
                 <p class="highlight">💨 FFFFFFFFFSSSSSSHHHHH! 💨</p>
                 
@@ -157,9 +157,9 @@ function showIntro() {
                     <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
                 </div>
                 
-                <p>Don (muffled from inside): "The... the forward reaction makes poison!"</p>
+                <p>Prof. Elmore (muffled from inside): "The... the reaction makes poison!"</p>
                 
-                <p>Adam (panicking): "Find something to cut us out!"</p>
+                <p>Prof. Matthews (panicking): "Find something to cut us out!"</p>
                 
                 <p>Your <strong>dear, lovely, and smart classmates Melody and Lucy</strong> run off to find tools, but it'll take <strong>10 rounds</strong> before they return. You need to manipulate the equilibrium to minimize toxic product formation!</p>
                 
@@ -337,10 +337,10 @@ function showVictory() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #6b7280; margin: 15px 0;">
-                Don: "You understand Le Chatelier better than most grad students!"
+                Prof. Elmore: "Here is the queen of equilibrium! We will offer a tenure track position for you right now."
             </p>
             <p style="font-style: italic; color: #6b7280; margin-bottom: 20px;">
-                Adam: "Seriously, have you considered a chemistry major?"
+                Prof. Matthews: "Seriously, have you considered a chemistry major?"
             </p>
             <div style="background: #d1fae5; border: 2px solid #10b981; border-radius: 10px; padding: 15px; margin: 20px 0;">
                 <p style="font-weight: bold; color: #065f46;">Final Toxicity: ${gameState.toxicity}%</p>
@@ -369,10 +369,10 @@ function showAbandoned() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" style="filter: grayscale(100%);" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #6b7280; margin: 15px 0;">
-                Don (from inside the glass): "Why is the equilibrium not equilibriuming... Why is my student not studenting..."
+                Prof. Elmore (crying from inside the glass): "This violates... every principle... I've ever taught..."
             </p>
             <p style="font-style: italic; color: #6b7280; margin-bottom: 20px;">
-                Adam (also trapped): "This violates... every principle... I've ever taught..."
+                Prof. Matthews (also trapped): "Why is the equilibrium not equilibriuming... Why is my student not studenting..."
             </p>
             <p style="font-size: 0.9em; color: #dc2626; font-weight: bold; margin: 20px 0;">
                 (Somewhere, Le Chatelier is rolling in his grave. And it's YOUR fault. The Honor Code is fully disappointed in you.)
@@ -400,10 +400,10 @@ function showSick() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #6b7280; margin: 15px 0;">
-                Adam (from hospital bed): "Never... use... equilibrium... in your life... again..."
+                Prof. Matthews (from hospital bed): "Never... use... equilibrium... in your life... again..."
             </p>
             <p style="font-style: italic; color: #6b7280; margin-bottom: 20px;">
-                Don (also hospitalized): "My liver hates you."
+                Prof. ELmore (also hospitalized): "Consider dropping the pre-med track... DONT BE MY DOCTOR."
             </p>
             <div style="background: #fed7aa; border: 2px solid #ea580c; border-radius: 10px; padding: 15px; margin: 20px 0;">
                 <p style="font-weight: bold; color: #9a3412;">Final Toxicity: ${gameState.toxicity}%</p>
@@ -431,7 +431,7 @@ function showDeath() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" style="filter: grayscale(100%);" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #d1d5db; margin: 20px 0;">
-                "Le Chatelier... would be... disappointed..." - Don and Adam's last words
+                "I told Don you're not ready for 116... I told him you are not suited for the class... Consider another major..." - Prof Matthew's last words
             </p>
             <div style="background: #7f1d1d; border: 2px solid #991b1b; border-radius: 10px; padding: 15px; margin: 20px 0;">
                 <p style="font-weight: bold; color: #fca5a5;">Final Toxicity: ${gameState.toxicity}%</p>
