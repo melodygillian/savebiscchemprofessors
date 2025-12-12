@@ -218,7 +218,7 @@ function showGameScreen() {
     }
     
     const feedbackHtml = gameState.lastActionCorrect === true 
-        ? '<div style="background: #d1fae5; border: 2px solid #10b981; padding: 15px; border-radius: 10px; margin-bottom: 20px; animation: fadeIn 0.5s;"><span style="font-size: 1.5em;">✅</span> <strong style="color: #065f46;">OH YEA! Here's our BISC/CHEM 116 genius out here</strong></div>'
+        ? '<div style="background: #d1fae5; border: 2px solid #10b981; padding: 15px; border-radius: 10px; margin-bottom: 20px; animation: fadeIn 0.5s;"><span style="font-size: 1.5em;">✅</span> <strong style="color: #065f46;">OH YEA! Here\'s our BISC/CHEM 116 genius out here</strong></div>'
         : gameState.lastActionCorrect === false
         ? '<div style="background: #fee2e2; border: 2px solid #ef4444; padding: 15px; border-radius: 10px; margin-bottom: 20px; animation: fadeIn 0.5s;"><span style="font-size: 1.5em;">❌</span> <strong style="color: #991b1b;">What... How many times were you sleeping in lecture...</strong></div>'
         : '';
