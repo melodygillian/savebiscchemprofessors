@@ -167,7 +167,7 @@ function startGame() {
         water: 50,
         thylakoids: 50,
         atp: 50,
-        turn: 1,
+        turn: 0,
         currentEvent: null,
         eventQueue: shuffledEvents,
         lastActionCorrect: null
@@ -367,7 +367,7 @@ function showVictory() {
                 <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
             </div>
             <p style="font-style: italic; color: #6b7280; margin: 20px 0;">
-                "You saved us from the quantum void! Thank you!" - Prof. Elmore & Matthews
+                "YOU ATE! You are the BEST, fav BISC/CHEMer!" - Prof. Elmore & Matthews
             </p>
             <button onclick="startGame()">Play Again</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
