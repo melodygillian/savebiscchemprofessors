@@ -1,123 +1,113 @@
 const EQUILIBRIUM_SCENARIOS = [
   {
-    reaction: "2NO₂(g) ⇌ N₂O₄(g)",
-    context: "Brown toxic nitrogen dioxide vs colorless dinitrogen tetroxide",
-    situation: "The beaker is turning brown! NO₂ is the toxic one!",
+    reaction: "N₂(g) + 3H₂(g) ⇌ 2NH₃(g) + heat",
+    context: "Haber process: H₂ and N₂ are fine, NH₃ is toxic and pungent!",
+    situation: "Prof. Matthews drops his chocolate bar in shock as ammonia fills the beaker!",
     options: [
-      { action: "Spray liquid nitrogen on the beaker", desc: "Cool it down dramatically!", toxicity: 2, feedback: "Exothermic forward! Less NO₂!" },
-      { action: "Blast it with a heat gun", desc: "MAXIMUM HEAT!", toxicity: 25, feedback: "You madman! Endothermic reverse = MORE brown toxic gas!" },
-      { action: "Increase pressure with a clamp", desc: "Squeeze the beaker!", toxicity: 3, feedback: "Fewer moles on right! Good thinking!" },
-      { action: "Do nothing and panic", desc: "Freeze in terror", toxicity: 8, feedback: "Adam: 'DOING NOTHING IS STILL A CHOICE, HELP US!'" }
-    ]
-  },
-  {
-    reaction: "CO(g) + 2H₂(g) ⇌ CH₃OH(g)",
-    context: "Toxic carbon monoxide vs methanol",
-    situation: "CO levels rising! Your professors are turning pale!",
-    options: [
-      { action: "Pump in extra H₂ through the hole", desc: "More hydrogen gas!", toxicity: 1, feedback: "Le Chatelier saves the day! Shift right!" },
-      { action: "Remove some CH₃OH with a syringe", desc: "Extract the product", toxicity: 2, feedback: "Product removal shifts equilibrium forward!" },
-      { action: "Add a CO catalyst", desc: "Speed up CO reactions!", toxicity: 18, feedback: "Catalysts don't shift equilibrium, just reach it FASTER = faster poisoning!" },
-      { action: "Open the hole wider", desc: "Let gases escape!", toxicity: 20, feedback: "CO escapes but also all the good stuff! Net: bad!" }
+      { action: "Blast it with a heat gun", desc: "MAXIMUM HEAT!", toxicity: 1, feedback: "Good! Heating shifts the exothermic reaction left, away from toxic NH₃!" },
+      { action: "Cool the beaker in ice", desc: "Lower the temperature", toxicity: 15, feedback: "No!! Exothermic forward! MORE ammonia! Elmore: 'My periodic table mug is fogging up!'" },
+      { action: "Add H₂ gas", desc: "Pump in hydrogen", toxicity: 15, feedback: "No! Excess reactant shifts right toward NH₃!" },
+      { action: "Compress the system", desc: "Increase pressure", toxicity: 15, feedback: "No! Fewer moles on right = MORE ammonia! Matthews: 'This is basic Le Chatelier!'" }
     ]
   },
   {
     reaction: "N₂(g) + 3H₂(g) ⇌ 2NH₃(g) + heat",
-    context: "Haber process - ammonia is pungent but N₂ and H₂ are relatively safe",
-    situation: "Don: 'The ammonia smell is overwhelming!'",
+    context: "Haber process again! NH₃ is the toxic one!",
+    situation: "The ammonia smell is overwhelming! Elmore's coffee mug is steaming ominously!",
     options: [
-      { action: "Cool the beaker in ice", desc: "Lower the temperature", toxicity: 15, feedback: "Exothermic forward! MORE ammonia! Wrong way!" },
-      { action: "Heat the beaker gently", desc: "Warm it up", toxicity: 3, feedback: "Endothermic reverse! Less ammonia!" },
-      { action: "Increase pressure", desc: "Compress everything", toxicity: 16, feedback: "Fewer moles right = MORE ammonia! Oops!" },
-      { action: "Decrease pressure", desc: "Release some pressure", toxicity: 4, feedback: "More moles left favored! Less ammonia!" }
+      { action: "Add Cl₂ gas through the hole", desc: "Chlorine injection!", toxicity: 1, feedback: "Good! Cl₂ reacts with H₂, removing reactant and shifting left!" },
+      { action: "Cool with liquid nitrogen", desc: "EXTREME COOLING!", toxicity: 15, feedback: "No!! Reaction shifts to ammonia! Matthews's photographic memory will remember this mistake forever!" },
+      { action: "Add Ar gas", desc: "Dilute with argon", toxicity: 15, feedback: "No! Inert gas doesn't shift equilibrium! Not the best option, and time is wasting!" },
+      { action: "Add N₂ gas", desc: "More nitrogen!", toxicity: 15, feedback: "No! More reactant drives it toward toxic NH₃! Elmore: 'Did you learn NOTHING?!'" }
     ]
   },
   {
-    reaction: "H₂(g) + I₂(g) ⇌ 2HI(g)",
-    context: "Iodine vapor (purple and irritating) vs hydrogen iodide",
-    situation: "Purple iodine vapor swirling! Adam is coughing!",
+    reaction: "2O₃(g) ⇌ 3O₂(g)",
+    context: "O₃ (ozone) is toxic and reactive! O₂ is what we breathe. Reaction is endothermic.",
+    situation: "Ozone is forming! Matthews's tennis serve arm is getting weak from the fumes!",
     options: [
-      { action: "Add more H₂ gas", desc: "Pump in hydrogen", toxicity: 2, feedback: "Excess reactant shifts right! Less I₂!" },
-      { action: "Remove HI with a cold trap", desc: "Freeze out the product", toxicity: 1, feedback: "Product removal! Equilibrium shifts forward!" },
-      { action: "Shake the beaker vigorously", desc: "Mix everything!", toxicity: 10, feedback: "Shaking doesn't change equilibrium! I₂ still toxic!" },
-      { action: "Add argon gas", desc: "Dilute with inert gas", toxicity: 8, feedback: "Inert gas doesn't shift equilibrium at constant volume!" }
+      { action: "Add more O₃", desc: "Add ozone", toxicity: 1, feedback: "Good! Adding reactant shifts right toward safe O₂! Counterintuitive but chemistry!" },
+      { action: "Add argon gas", desc: "Inert gas dilution", toxicity: 15, feedback: "No! Inert gas does nothing to shift equilibrium! Elmore's clutching his 3D-printed green beaker in despair!" },
+      { action: "Cool the beaker in ice", desc: "Lower temperature", toxicity: 15, feedback: "No! Cooling an endothermic reaction shifts LEFT toward toxic O₃!" },
+      { action: "Remove O₂", desc: "Extract oxygen", toxicity: 2, feedback: "Product removal helps but you're removing the SAFE gas! There was a better option!" }
     ]
   },
   {
-    reaction: "PCl₅(g) ⇌ PCl₃(g) + Cl₂(g)",
-    context: "All are toxic but Cl₂ is EXTREMELY toxic (greenish gas)",
-    situation: "Green chlorine gas forming! This is really bad!",
+    reaction: "CO(g) + H₂O(g) ⇌ CO₂(g) + H₂(g)",
+    context: "CO is toxic! CO₂ and H₂ are safe. The reaction is exothermic.",
+    situation: "Carbon monoxide building up! Elmore's poetic soul is fading!",
     options: [
-      { action: "Decrease volume/increase pressure", desc: "Compress the system", toxicity: 3, feedback: "Fewer moles left! Less Cl₂ formation!" },
-      { action: "Increase volume/decrease pressure", desc: "Give it more space", toxicity: 22, feedback: "More moles right! WAY more Cl₂! Don: 'WHY?!'" },
-      { action: "Cool everything down", desc: "Apply cold", toxicity: 7, feedback: "Temperature effect unclear here, modest help" },
-      { action: "Add more PCl₅", desc: "Add more reactant", toxicity: 18, feedback: "You're making MORE of everything including Cl₂!" }
+      { action: "Remove H₂ gas", desc: "Vent the hydrogen", toxicity: 1, feedback: "Good! Product removal shifts right toward CO₂ and H₂, away from toxic CO!" },
+      { action: "Add heat", desc: "Heat it up", toxicity: 15, feedback: "No! Heating shifts exothermic reaction LEFT toward toxic CO! Matthews: 'My daughters would be ashamed!'" },
+      { action: "Add CO₂", desc: "Pump in carbon dioxide", toxicity: 15, feedback: "No! Adding product shifts LEFT toward toxic CO!" },
+      { action: "Compress the system", desc: "Increase pressure", toxicity: 15, feedback: "No! Equal moles on both sides = pressure has no effect! There was a better choice!" }
     ]
   },
   {
-    reaction: "2SO₂(g) + O₂(g) ⇌ 2SO₃(g) + heat",
-    context: "SO₂ is toxic (sharp smell), SO₃ reacts with water to make acid",
-    situation: "Choking on SO₂! The classic sulfur smell!",
+    reaction: "CO(g) + H₂O(g) ⇌ CO₂(g) + H₂(g)",
+    context: "CO is deadly toxic! The silent killer! Reaction is exothermic.",
+    situation: "CO levels rising! Matthews's memories of Hawaii are flashing before his eyes!",
     options: [
-      { action: "Add pure O₂", desc: "Oxygen to the rescue!", toxicity: 2, feedback: "Excess O₂ drives forward! Less SO₂!" },
-      { action: "Heat the beaker", desc: "Increase temperature", toxicity: 19, feedback: "Endothermic reverse! MORE SO₂! Adam: 'NO NO NO!'" },
-      { action: "Cool the beaker", desc: "Use ice bath", toxicity: 3, feedback: "Exothermic forward! Less SO₂!" },
-      { action: "Remove SO₃ vapor", desc: "Trap the product", toxicity: 1, feedback: "Product removal = equilibrium shift forward! Perfect!" }
+      { action: "Add CO gas", desc: "More carbon monoxide?!", toxicity: 1, feedback: "Good! Wait, WHAT?! Adding reactant shifts RIGHT away from CO toward products! Brilliant reverse psychology!" },
+      { action: "Remove H₂O vapor", desc: "Dry it out", toxicity: 15, feedback: "No! Removing reactant shifts LEFT toward toxic CO! Elmore's live music concerts are flashing before his eyes!" },
+      { action: "Add heat", desc: "Blast with heat", toxicity: 15, feedback: "No! Shifts LEFT toward CO! Matthews: 'I can't remember if I said goodbye to my Newfoundland!'" },
+      { action: "Add argon", desc: "Inert gas", toxicity: 2, feedback: "Inert gas barely helps. There were much better options! Elmore: 'Even English literature couldn't describe this mediocrity!'" }
     ]
   },
   {
-    reaction: "CO₂(g) + H₂(g) ⇌ CO(g) + H₂O(g) + heat",
-    context: "CO is super toxic, CO₂ is relatively safe",
-    situation: "Carbon monoxide forming! The silent killer!",
+    reaction: "CO(g) + 2H₂(g) ⇌ CH₃OH(g)",
+    context: "CO is toxic! CH₃OH (methanol) is less harmful. This makes the fuel methanol!",
+    situation: "CO building up! Prof. Matthews' immunology background isn't helping with chemistry!",
     options: [
-      { action: "Cool the system", desc: "Lower temperature", toxicity: 2, feedback: "Exothermic forward consumes CO!" },
-      { action: "Heat the system", desc: "Raise temperature", toxicity: 20, feedback: "Endothermic reverse makes MORE CO! Don: 'TERRIBLE CHOICE!'" },
-      { action: "Add more CO₂", desc: "Pump in carbon dioxide", toxicity: 4, feedback: "Shifts forward but also makes some CO. Mediocre." },
-      { action: "Remove water vapor", desc: "Dry out the system", toxicity: 16, feedback: "Product removal but wrong product! Still favor CO formation!" }
-    ]
-  },
-  {
-    reaction: "2H₂S(g) + O₂(g) ⇌ 2S(s) + 2H₂O(g)",
-    context: "H₂S is toxic (rotten egg smell), sulfur and water are safe",
-    situation: "Rotten egg gas everywhere! Don: 'This is the worst one yet!'",
-    options: [
-      { action: "Pump in oxygen", desc: "Add O₂ through the hole", toxicity: 1, feedback: "Drives equilibrium right! Brilliant!" },
-      { action: "Remove solid sulfur", desc: "Scrape it out somehow", toxicity: 3, feedback: "Product removal shifts right! Creative!" },
-      { action: "Heat it up", desc: "Apply heat", toxicity: 12, feedback: "Helps kinetics but doesn't favor either side much. Meh." },
-      { action: "Dilute with nitrogen", desc: "Add N₂ gas", toxicity: 9, feedback: "Inert gas won't help! Still toxic!" }
-    ]
-  },
-  {
-    reaction: "CH₄(g) + H₂O(g) ⇌ CO(g) + 3H₂(g)",
-    context: "CO is the toxic product here!",
-    situation: "Carbon monoxide production accelerating!",
-    options: [
-      { action: "Remove CO as it forms", desc: "Trap it chemically", toxicity: 18, feedback: "Product removal shifts RIGHT = makes MORE CO! Wrong product!" },
-      { action: "Remove H₂ as it forms", desc: "Vent the hydrogen", toxicity: 2, feedback: "This product removal drives forward, making CO, but H₂ removal is faster!" },
-      { action: "Add more CH₄", desc: "More methane!", toxicity: 16, feedback: "You're feeding the toxic reaction!" },
-      { action: "Add more H₂O", desc: "Steam injection!", toxicity: 14, feedback: "Also feeding the forward reaction! Don: 'STOP HELPING!'" }
+      { action: "Pump in extra H₂", desc: "Add hydrogen through hole", toxicity: 1, feedback: "Le Chatelier saves the day! Excess reactant shifts RIGHT toward safe methanol!" },
+      { action: "Remove CH₃OH with syringe", desc: "Extract methanol", toxicity: 1, feedback: "Nice! Product removal shifts equilibrium forward away from CO!" },
+      { action: "Compress the system", desc: "Increase pressure", toxicity: 2, feedback: "Good! 3 moles left → 1 mole right, pressure favors fewer moles!" },
+      { action: "Open hole for H₂ escape", desc: "Let hydrogen vent", toxicity: 15, feedback: "No! Removing reactant shifts LEFT toward toxic CO! Elmore's hiking boots won't save him now!" }
     ]
   },
   {
     reaction: "4HCl(g) + O₂(g) ⇌ 2Cl₂(g) + 2H₂O(g)",
-    context: "HCl is corrosive, Cl₂ is super toxic green gas",
-    situation: "Green chlorine gas! Adam: 'I can taste it! NOT GOOD!'",
+    context: "Both HCl and Cl₂ are toxic, but Cl₂ (green gas) is MUCH worse! Reaction is exothermic.",
+    situation: "Green chlorine gas appearing! Matthews's baking skills can't help him now!",
     options: [
-      { action: "Remove Cl₂ immediately", desc: "Trap the chlorine", toxicity: 25, feedback: "Product removal drives equilibrium RIGHT = MORE Cl₂ formed! Infinite loop!" },
-      { action: "Remove water vapor", desc: "Dry it out", toxicity: 23, feedback: "Also drives right! You're making it worse!" },
-      { action: "Remove O₂", desc: "Eliminate oxygen", toxicity: 3, feedback: "Reactant removal shifts LEFT! Smart!" },
-      { action: "Increase pressure", desc: "Compress it", toxicity: 5, feedback: "Fewer moles right, modest help" }
+      { action: "Remove O₂", desc: "Eliminate oxygen", toxicity: 1, feedback: "Nice! Removing reactant drives LEFT away from deadly Cl₂!" },
+      { action: "Add heat", desc: "Blast with heat gun", toxicity: 1, feedback: "Nice! Heating exothermic reaction shifts LEFT away from Cl₂!" },
+      { action: "Remove H₂O vapor", desc: "Trap the water", toxicity: 15, feedback: "No! Product removal drives RIGHT = MORE Cl₂ formed! Elmore: 'This is poetry... tragic poetry!'" },
+      { action: "Add argon gas", desc: "Inert dilution", toxicity: 2, feedback: "Not the best choice! No change in equilibrium, but at least you didn't make it worse!" },
+      { action: "Increase pressure", desc: "Compress everything", toxicity: 15, feedback: "No! 5 moles left → 4 moles right = more Cl₂! Matthews's photographic memory will haunt him with this!" }
     ]
   },
   {
-    reaction: "⚠️ CATASTROPHIC LEAK: Multiple equilibria!",
-    context: "The beaker cracked slightly! Every reaction is happening at once!",
-    situation: "CHAOS! Every toxic gas is forming simultaneously!",
+    reaction: "N₂O₄(g) ⇌ 2NO₂(g)",
+    context: "NO₂ is toxic brown gas! N₂O₄ is colorless and less harmful. Reaction is endothermic.",
+    situation: "Brown nitrogen dioxide fumes! Elmore's periodic table mug can't contain this nightmare!",
     options: [
-      { action: "Seal with epoxy immediately", desc: "Emergency repair!", toxicity: 5, feedback: "Quick thinking! Bought time!" },
-      { action: "Dunk in ice water", desc: "EMERGENCY COOLING!", toxicity: 8, feedback: "Helps some, hurts others! Net: okay!" },
-      { action: "Pressurize with nitrogen", desc: "Blast inert gas in!", toxicity: 15, feedback: "Doesn't help equilibria! Adam: 'SCIENCE HAS FAILED US!'" },
-      { action: "Run away screaming", desc: "Abandon your professors", toxicity: 30, feedback: "Don: 'WE CAN SEE YOU THROUGH THE GLASS!'" }
+      { action: "Cool with ice bath", desc: "Lower temperature", toxicity: 1, feedback: "Good! Cooling endothermic reaction shifts LEFT toward colorless N₂O₄!" },
+      { action: "Heat the beaker", desc: "Apply heat", toxicity: 15, feedback: "No! Heating shifts RIGHT toward toxic brown NO₂! Matthews: 'My tennis elbow hurts less than watching this!'" },
+      { action: "Increase pressure", desc: "Compress the system", toxicity: 1, feedback: "Good! 2 moles right → 1 mole left favors N₂O₄!" },
+      { action: "Decrease pressure", desc: "Give it space", toxicity: 15, feedback: "No! Favors 2 moles = MORE toxic NO₂! Elmore's love of hiking won't save him from this!" }
+    ]
+  },
+  {
+    reaction: "CaCO₃(s) + heat ⇌ CaO(s) + CO₂(g)",
+    context: "CaCO₃ is limestone (safe), but the high CO₂ concentration is suffocating!",
+    situation: "CO₂ levels skyrocketing! Prof. Matthews can barely breathe!",
+    options: [
+      { action: "Cool the beaker", desc: "Lower temperature", toxicity: 1, feedback: "Good! Cooling shifts the endothermic decomposition LEFT, reducing CO₂!" },
+      { action: "Heat the beaker", desc: "Add more heat", toxicity: 15, feedback: "No! Heat drives decomposition RIGHT = MORE CO₂! Matthews: 'My chocolate is melting AND I'm suffocating!'" },
+      { action: "Remove CO₂", desc: "Trap the gas", toxicity: 15, feedback: "No! Product removal shifts RIGHT = makes MORE CO₂ faster than you remove it!" },
+      { action: "Increase pressure", desc: "Compress it", toxicity: 2, feedback: "Modest help! Higher pressure slightly opposes gas formation, but cooling was better!" }
+    ]
+  },
+  {
+    reaction: "H₂(g) + Cl₂(g) ⇌ 2HCl(g) + heat",
+    context: "Cl₂ is toxic green gas! HCl is corrosive but less immediately deadly. Exothermic reaction.",
+    situation: "Chlorine gas swirling! Elmore's 3D-printed beaker would be proud if it could see this!",
+    options: [
+      { action: "Add heat", desc: "Heat it up", toxicity: 1, feedback: "Good! Heating shifts exothermic reaction LEFT away from HCl, consuming Cl₂!" },
+      { action: "Cool with ice", desc: "Lower temperature", toxicity: 2, feedback: "Cooling shifts RIGHT, consuming toxic Cl₂ but making corrosive HCl. Moderate trade-off!" },
+      { action: "Add H₂ gas", desc: "Pump in hydrogen", toxicity: 2, feedback: "Decent! Shifts right, consuming Cl₂, though you make more HCl. Better than nothing!" },
+      { action: "Remove HCl", desc: "Trap hydrogen chloride", toxicity: 15, feedback: "No! Product removal shifts RIGHT, but you're consuming Cl₂ slower than new HCl forms! Matthews: 'This is taking forever!'" }
     ]
   }
 ];
