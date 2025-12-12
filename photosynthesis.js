@@ -168,15 +168,12 @@ function startGame() {
         thylakoids: 50,
         atp: 50,
         turn: 1,
-        currentEvent: null,
-        eventQueue: shuffledEvents,  // Make sure this is set!
+        currentEvent: shuffledEvents[0],  // SET IT IMMEDIATELY
+        eventQueue: shuffledEvents,
         lastActionCorrect: null
     };
     
-    // Add a small delay to ensure state is set
-    setTimeout(() => {
-        nextTurn();
-    }, 10);
+    showGameScreen();  // Call directly instead of nextTurn
 }
 
 function nextTurn() {
