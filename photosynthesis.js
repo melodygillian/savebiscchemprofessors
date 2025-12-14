@@ -74,7 +74,9 @@ let gameState = {
     turn: 1,
     currentEvent: null,
     eventQueue: [],
-    lastActionCorrect: null
+    lastActionCorrect: null,
+    timer: null,
+    timeLeft: 5
 };
 
 const clamp = (val) => Math.max(0, Math.min(100, val));
@@ -114,6 +116,74 @@ function getResourceHints() {
     return hints;
 }
 
+function clearTimer() {
+    if (gameState.timer) {
+        clearInterval(gameState.timer);
+        gameState.timer = null;
+    }
+}
+
+function startTimer() {
+    clearTimer();
+    gameState.timeLeft = 5;
+    
+    // Update display immediately
+    updateTimerDisplay();
+    
+    gameState.timer = setInterval(() => {
+        gameState.timeLeft--;
+        updateTimerDisplay();
+        
+        if (gameState.timeLeft <= 0) {
+            clearTimer();
+            handleTimeout();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const timerElement = document.getElementById('timer-display');
+    if (timerElement) {
+        timerElement.textContent = gameState.timeLeft;
+        
+        // Change color based on time remaining
+        if (gameState.timeLeft <= 2) {
+            timerElement.style.color = '#ef4444';
+            timerElement.style.animation = 'pulse 0.5s infinite';
+        } else if (gameState.timeLeft <= 3) {
+            timerElement.style.color = '#f97316';
+        } else {
+            timerElement.style.color = '#22c55e';
+        }
+    }
+}
+
+function handleTimeout() {
+    gameState.lastActionCorrect = false;
+    
+    // Apply penalty for timeout - NO bonus, just event damage
+    const event = gameState.currentEvent;
+    if (event.dcpip) gameState.dcpip = clamp(gameState.dcpip + event.dcpip);
+    if (event.water) gameState.water = clamp(gameState.water + event.water);
+    if (event.thylakoids) gameState.thylakoids = clamp(gameState.thylakoids + event.thylakoids);
+    if (event.atp) gameState.atp = clamp(gameState.atp + event.atp);
+    
+    // Extra penalty for timeout
+    gameState.dcpip = clamp(gameState.dcpip - 5);
+    gameState.water = clamp(gameState.water - 5);
+    gameState.thylakoids = clamp(gameState.thylakoids - 5);
+    gameState.atp = clamp(gameState.atp - 5);
+    
+    gameState.turn++;
+    
+    showGameScreen();
+    
+    setTimeout(() => {
+        gameState.lastActionCorrect = null;
+        nextTurn();
+    }, 2000);
+}
+
 function showIntro() {
     const container = document.getElementById('game-container');
     container.innerHTML = `
@@ -131,7 +201,7 @@ function showIntro() {
                 
                 <p>Then Prof. Matthews said, "Hey Don, what does this big red button do?"</p>
                 
-                <p>Don replied, "Oh that? That's the—<strong>WAIT, DON'T PRESS—</strong>"</p>
+                <p>Prof. Elmore replied, "Oh that? That's the—<strong>WAIT, DON'T PRESS—</strong>"</p>
                 
                 <p class="highlight">💥 ZZZZAAAAPPPPP! 💥</p>
                 
@@ -142,10 +212,14 @@ function showIntro() {
                     <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
                 </div>
                 
-                <p>The only way to escape is to <strong>keep the light reactions running for 10 turns</strong> without letting any critical resource drop to zero. If the chloroplast collapses, they'll be stuck forever!</p>
+                <p>The only way to escape is to <strong>keep the light reactions running for 10 turns</strong> without letting any critical resource drop to zero. If the chloroplast collapses, they'll be stuck forever! Time is money, every decision should be made within 5 seconds, otherwise...</p>
                 
                 <p style="text-align: center; font-size: 1.3em; font-weight: bold; color: #15803d; margin-top: 30px;">
                     Can you save Professors Elmore and Matthews?
+                </p>
+                
+                <p style="text-align: center; font-size: 1.1em; color: #dc2626; font-weight: bold; margin-top: 20px;">
+                    ⏱️ You have 5 seconds per turn!
                 </p>
             </div>
             
@@ -172,16 +246,19 @@ function startGame() {
     gameState.lastActionCorrect = null;
     
     showGameScreen();
+    startTimer();
 }
 
 function nextTurn() {
     if (gameState.dcpip <= 0 || gameState.water <= 0 || 
         gameState.thylakoids <= 0 || gameState.atp <= 0) {
+        clearTimer();
         showGameOver();
         return;
     }
     
     if (gameState.turn > 10) {
+        clearTimer();
         showRescueChoice();
         return;
     }
@@ -190,6 +267,7 @@ function nextTurn() {
     gameState.currentEvent = event;
     
     showGameScreen();
+    startTimer();
 }
 
 function showGameScreen() {
@@ -220,9 +298,15 @@ function showGameScreen() {
         <div class="screen" style="max-width: 850px; margin: 0 auto; padding: 20px;">
             <div class="game-header" style="margin-bottom: 15px; padding-bottom: 10px;">
                 <h1 style="font-size: 1.8em; margin-bottom: 0;">Chloroplast Rescue</h1>
-                <div class="turn-counter">
-                    <div class="turn-label" style="font-size: 0.8em;">Turn</div>
-                    <div class="turn-number" style="font-size: 1.8em;">${gameState.turn}/10</div>
+                <div style="display: flex; gap: 20px; align-items: center;">
+                    <div class="turn-counter">
+                        <div class="turn-label" style="font-size: 0.8em;">Turn</div>
+                        <div class="turn-number" style="font-size: 1.8em;">${gameState.turn}/10</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.8em; color: #6b7280;">Time Left</div>
+                        <div id="timer-display" style="font-size: 2em; font-weight: bold; color: #22c55e;">${gameState.timeLeft}</div>
+                    </div>
                 </div>
             </div>
             
@@ -257,7 +341,7 @@ function showGameScreen() {
             </div>
             
             <div class="actions-panel" style="padding: 15px;">
-                <h3 class="actions-title" style="font-size: 1.1em; margin-bottom: 12px;">Choose Your Action</h3>
+                <h3 class="actions-title" style="font-size: 1.1em; margin-bottom: 12px;">Choose Your Action - QUICK!</h3>
                 <div class="action-buttons" style="gap: 10px;">
                     <button class="action-btn btn-dcpip" onclick="takeAction('dcpip')" style="padding: 12px; font-size: 0.9em;">💧 Add DCPIP</button>
                     <button class="action-btn btn-light" onclick="takeAction('water')" style="padding: 12px; font-size: 0.9em;">💦 Add H₂O</button>
@@ -275,6 +359,8 @@ function showGameScreen() {
 }
 
 function takeAction(type) {
+    clearTimer(); // Stop the timer when action is taken
+    
     const correctActions = gameState.currentEvent.correctActions;
     gameState.lastActionCorrect = correctActions.includes(type);
     
@@ -310,6 +396,7 @@ function takeAction(type) {
 }
 
 function showRescueChoice() {
+    clearTimer();
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="screen choice-screen">
@@ -411,6 +498,7 @@ function showAbandoned() {
 }
 
 function showGameOver() {
+    clearTimer();
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="screen gameover-screen">
