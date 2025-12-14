@@ -116,7 +116,9 @@ let gameState = {
     toxicity: 0,
     round: 1,
     currentScenario: null,
-    lastFeedback: ''
+    lastFeedback: '',
+    timerInterval: null,
+    timeRemaining: 10
 };
 
 function showIntro() {
@@ -134,7 +136,7 @@ function showIntro() {
                 
                 <p><strong>Professor Don Elmore</strong> and <strong>Professor Adam Matthews</strong> were demonstrating chemical equilibrium to the class. Prof. Elmore had just finished saying, "And remember, Le Chatelier's principle states that—"</p>
                 
-                <p>Prof。 Matthews interrupted: "Hey Don, should this beaker actually be sealed THIS tight???????????"</p>
+                <p>Prof. Matthews interrupted: "Hey Don, should this beaker actually be sealed THIS tight???????????"</p>
                 
                 <p class="highlight">💨 FFFFFFFFFSSSSSSHHHHH! 💨</p>
                 
@@ -151,7 +153,7 @@ function showIntro() {
                 
                 <p>Prof. Matthews (panicking): "Find something to cut us out!"</p>
                 
-                <p>Your <strong>dear, lovely, and smart classmates Melody and Lucy</strong> run off to find tools, but it'll take <strong>10 rounds</strong> before they return. You need to manipulate the equilibrium to minimize toxic product formation!</p>
+                <p>Your <strong>dear, lovely, and smart classmates Melody and Lucy</strong> run off to find tools, but it'll take <strong>10 rounds</strong> before they return. You need to manipulate the equilibrium to minimize toxic product formation <strong style="color: #dc2626;">within 10 seconds</strong> after each equilibrium reaction happens!</p>
                 
                 <p style="text-align: center; font-size: 1.3em; font-weight: bold; color: #7c2d12; margin-top: 30px;">
                     Keep their toxicity below 70% until rescue arrives!
@@ -169,7 +171,9 @@ function startGame() {
         toxicity: 0,
         round: 1,
         currentScenario: null,
-        lastFeedback: ''
+        lastFeedback: '',
+        timerInterval: null,
+        timeRemaining: 10
     };
     nextScenario();
 }
@@ -192,13 +196,95 @@ function nextScenario() {
     const scenario = EQUILIBRIUM_SCENARIOS[Math.floor(Math.random() * EQUILIBRIUM_SCENARIOS.length)];
     gameState.currentScenario = scenario;
     gameState.lastFeedback = '';
+    gameState.timeRemaining = 10;
     
     showGameScreen();
+    startTimer();
+}
+
+function startTimer() {
+    // Clear any existing timer
+    if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+    }
+    
+    gameState.timerInterval = setInterval(() => {
+        gameState.timeRemaining--;
+        updateTimerDisplay();
+        
+        if (gameState.timeRemaining <= 0) {
+            clearInterval(gameState.timerInterval);
+            timeOut();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const timerElement = document.getElementById('timer-display');
+    const container = document.getElementById('game-container');
+    
+    if (timerElement) {
+        timerElement.textContent = gameState.timeRemaining;
+        
+        // Update timer color based on urgency
+        if (gameState.timeRemaining <= 3) {
+            timerElement.style.color = '#dc2626';
+            timerElement.style.animation = 'pulse 0.5s ease-in-out infinite';
+        } else if (gameState.timeRemaining <= 5) {
+            timerElement.style.color = '#ea580c';
+        }
+    }
+    
+    // Change background color in last 5 seconds for dramatic effect
+    if (gameState.timeRemaining <= 5 && gameState.timeRemaining > 3) {
+        container.style.background = 'linear-gradient(135deg, #fef3c7, #fed7aa)';
+        container.style.transition = 'background 0.3s ease';
+    } else if (gameState.timeRemaining <= 3) {
+        container.style.background = 'linear-gradient(135deg, #fecaca, #fca5a5)';
+        container.style.transition = 'background 0.3s ease';
+    }
+}
+
+function timeOut() {
+    // Auto-select a random wrong answer (high toxicity)
+    const wrongOptions = gameState.currentScenario.options
+        .map((opt, idx) => ({ opt, idx }))
+        .filter(item => item.opt.toxicity >= 10);
+    
+    if (wrongOptions.length > 0) {
+        const randomWrong = wrongOptions[Math.floor(Math.random() * wrongOptions.length)];
+        gameState.lastFeedback = `⏰ TIME'S UP! You panicked and ${randomWrong.opt.action}! ${randomWrong.opt.feedback}`;
+        gameState.toxicity = Math.min(100, gameState.toxicity + randomWrong.opt.toxicity);
+    } else {
+        // If somehow all options are good, just pick the first one
+        const firstOption = gameState.currentScenario.options[0];
+        gameState.lastFeedback = `⏰ TIME'S UP! You defaulted to: ${firstOption.action}. ${firstOption.feedback}`;
+        gameState.toxicity = Math.min(100, gameState.toxicity + firstOption.toxicity);
+    }
+    
+    showGameScreen();
+    
+    setTimeout(() => {
+        if (gameState.toxicity >= 100) {
+            showDeath();
+            return;
+        }
+        
+        gameState.round++;
+        setTimeout(() => {
+            nextScenario();
+        }, 500);
+    }, 2500);
 }
 
 function showGameScreen() {
     const container = document.getElementById('game-container');
     const isCatastrophic = gameState.currentScenario.reaction.includes('⚠️');
+    
+    // Reset background if showing feedback
+    if (gameState.lastFeedback) {
+        container.style.background = '';
+    }
     
     container.innerHTML = `
         <div class="screen">
@@ -209,6 +295,14 @@ function showGameScreen() {
                     <div class="round-number" style="color: #7c2d12;">${gameState.round}/10</div>
                 </div>
             </div>
+            
+            ${!gameState.lastFeedback ? `
+                <div class="timer-container" style="text-align: center; margin: 20px 0;">
+                    <div style="font-size: 1.2em; color: #374151; margin-bottom: 10px;">⏰ Time Remaining</div>
+                    <div id="timer-display" style="font-size: 4em; font-weight: bold; color: #16a34a;">${gameState.timeRemaining}</div>
+                    <div style="font-size: 0.9em; color: #6b7280; margin-top: 5px;">Make your choice before time runs out!</div>
+                </div>
+            ` : ''}
             
             <div class="scenario-box ${isCatastrophic ? 'catastrophic' : ''}">
                 <div class="scenario-title ${isCatastrophic ? 'catastrophic' : ''}">${isCatastrophic ? '🚨' : '⚗️'} Chemical Equilibrium Challenge</div>
@@ -251,10 +345,26 @@ function showGameScreen() {
                 </div>
             </div>
         </div>
+        
+        <style>
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+            }
+        </style>
     `;
 }
 
 function takeAction(optionIndex) {
+    // Stop the timer
+    if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+    }
+    
+    // Reset background
+    const container = document.getElementById('game-container');
+    container.style.background = '';
+    
     const option = gameState.currentScenario.options[optionIndex];
     gameState.toxicity = Math.min(100, gameState.toxicity + option.toxicity);
     gameState.lastFeedback = option.feedback;
@@ -276,6 +386,7 @@ function takeAction(optionIndex) {
 
 function showRescueChoice() {
     const container = document.getElementById('game-container');
+    container.style.background = '';
     container.innerHTML = `
         <div class="screen choice-screen">
             <h1 style="color: #1e40af; margin-bottom: 30px;">🔧 MELODY AND LUCY! THEY ARE BACK! 🔧</h1>
@@ -313,6 +424,7 @@ function rescueProfessors(rescue) {
 
 function showVictory() {
     const container = document.getElementById('game-container');
+    container.style.background = '';
     container.innerHTML = `
         <div class="screen victory-screen">
             <h1 class="victory-title">🎉 PERFECT RESCUE! 🎉</h1>
@@ -344,6 +456,7 @@ function showVictory() {
 
 function showAbandoned() {
     const container = document.getElementById('game-container');
+    container.style.background = '';
     container.innerHTML = `
         <div class="screen abandoned-screen">
             <h1 style="color: #6b21a8; font-size: 3em; margin-bottom: 20px;">😱 YOU MONSTER! 😱</h1>
@@ -375,6 +488,7 @@ function showAbandoned() {
 
 function showSick() {
     const container = document.getElementById('game-container');
+    container.style.background = '';
     container.innerHTML = `
         <div class="screen" style="background: linear-gradient(135deg, #fef3c7, #fed7aa); text-align: center;">
             <h1 style="color: #c2410c; font-size: 3em; margin-bottom: 20px;">🤢 SEVERELY POISONED 🤢</h1>
@@ -407,6 +521,7 @@ function showSick() {
 
 function showDeath() {
     const container = document.getElementById('game-container');
+    container.style.background = '';
     container.innerHTML = `
         <div class="screen" style="background: linear-gradient(135deg, #1f2937, #374151); text-align: center;">
             <h1 style="color: #fca5a5; font-size: 3em; margin-bottom: 20px;">☠️ FATAL TOXICITY ☠️</h1>
