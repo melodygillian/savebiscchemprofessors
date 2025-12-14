@@ -76,7 +76,7 @@ let gameState = {
     eventQueue: [],
     lastActionCorrect: null,
     timer: null,
-    timeLeft: 5
+    timeLeft: 10
 };
 
 const clamp = (val) => Math.max(0, Math.min(100, val));
@@ -125,7 +125,7 @@ function clearTimer() {
 
 function startTimer() {
     clearTimer();
-    gameState.timeLeft = 5;
+    gameState.timeLeft = 10;
     
     // Update display immediately
     updateTimerDisplay();
@@ -212,14 +212,14 @@ function showIntro() {
                     <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
                 </div>
                 
-                <p>The only way to escape is to <strong>keep the light reactions running for 10 turns</strong> without letting any critical resource drop to zero. If the chloroplast collapses, they'll be stuck forever! Time is money, every decision should be made within 5 seconds, otherwise...</p>
+                <p>The only way to escape is to <strong>keep the light reactions running for 10 turns</strong> without letting any critical resource drop to zero. If the chloroplast collapses, they'll be stuck forever! Time is money, every decision should be made within 10 seconds, otherwise...</p>
                 
                 <p style="text-align: center; font-size: 1.3em; font-weight: bold; color: #15803d; margin-top: 30px;">
                     Can you save Professors Elmore and Matthews?
                 </p>
                 
                 <p style="text-align: center; font-size: 1.1em; color: #dc2626; font-weight: bold; margin-top: 20px;">
-                    ⏱️ You have 5 seconds per turn!
+                    ⏱️ You have 10 seconds per turn!
                 </p>
             </div>
             
