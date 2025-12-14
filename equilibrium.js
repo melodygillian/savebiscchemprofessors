@@ -162,6 +162,10 @@ function showIntro() {
             
             <button onclick="startGame()" style="background: #7c2d12;">🚀 Start Chemical Rescue!</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
+
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: For real, who doesn't lock in equilibrium??
+            </div>
         </div>
     `;
 }
@@ -344,7 +348,12 @@ function showGameScreen() {
                     `).join('')}
                 </div>
             </div>
+
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: For real, who doesn't lock in equilibrium??
+            </div>
         </div>
+
         
         <style>
             @keyframes pulse {
@@ -410,6 +419,10 @@ function showRescueChoice() {
             <p style="font-size: 0.8em; color: #6b7280; margin-top: 20px; font-style: italic;">
                 (Why would you even consider choosing no? What's wrong with you?)
             </p>
+
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: For real, who doesn't lock in equilibrium??
+            </div>
         </div>
     `;
 }
@@ -450,6 +463,10 @@ function showVictory() {
             </div>
             <button onclick="startGame()" style="background: #16a34a;">Play Again</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
+
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: For real, who doesn't lock in equilibrium??
+            </div>
         </div>
     `;
 }
@@ -482,6 +499,10 @@ function showAbandoned() {
             </p>
             <button onclick="startGame()" style="background: #7c3aed;">Fix Your Horrible Mistake</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
+
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: For real, who doesn't lock in equilibrium??
+            </div>
         </div>
     `;
 }
@@ -515,6 +536,10 @@ function showSick() {
             </div>
             <button onclick="startGame()" style="background: #ea580c;">Better Luck Next Time</button>
             <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
+
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: For real, who doesn't lock in equilibrium??
+            </div>
         </div>
     `;
 }
@@ -597,6 +622,10 @@ function showDeath() {
                     ← Leave This Nightmare
                 </button>
             </a>
+
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+                Created by Melody L, Lucy W 2025: For real, who doesn't lock in equilibrium??
+            </div>
         </div>
     `;
 }
