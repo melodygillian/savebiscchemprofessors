@@ -153,7 +153,7 @@ function showIntro() {
                 
                 <p>Prof. Matthews (panicking): "Find something to cut us out!"</p>
                 
-                <p>Your <strong>dear, lovely, and smart classmates Melody and Lucy</strong> run off to find tools, but it'll take <strong>10 rounds</strong> before they return. You need to manipulate the equilibrium to minimize toxic product formation <strong style="color: #dc2626;">within 10 seconds</strong> after each equilibrium reaction happens!</p>
+                <p>Your <strong>dear, lovely, and smart classmates Melody and Lucy</strong> run off to find tools, but it'll take <strong>10 rounds</strong> before they return. You need to manipulate the equilibrium to minimize toxic product formation <strong style="color: #dc2626;">within 20 seconds</strong> after each equilibrium reaction happens!</p>
                 
                 <p style="text-align: center; font-size: 1.3em; font-weight: bold; color: #7c2d12; margin-top: 30px;">
                     Keep their toxicity below 70% until rescue arrives!
@@ -173,7 +173,7 @@ function startGame() {
         currentScenario: null,
         lastFeedback: '',
         timerInterval: null,
-        timeRemaining: 10
+        timeRemaining: 20
     };
     nextScenario();
 }
@@ -196,7 +196,7 @@ function nextScenario() {
     const scenario = EQUILIBRIUM_SCENARIOS[Math.floor(Math.random() * EQUILIBRIUM_SCENARIOS.length)];
     gameState.currentScenario = scenario;
     gameState.lastFeedback = '';
-    gameState.timeRemaining = 10;
+    gameState.timeRemaining = 20;
     
     showGameScreen();
     startTimer();
