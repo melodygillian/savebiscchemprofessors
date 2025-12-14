@@ -500,26 +500,96 @@ function showAbandoned() {
 function showGameOver() {
     clearTimer();
     const container = document.getElementById('game-container');
+    
+    // Make the ENTIRE container neon green!
+    container.style.background = 'linear-gradient(135deg, #10b981, #059669, #047857, #065f46)';
+    container.style.animation = 'greenPulse 2s ease-in-out infinite';
+    
     container.innerHTML = `
-        <div class="screen gameover-screen">
-            <h1 class="gameover-title">💥 CHLOROPLAST COLLAPSE! 💥</h1>
-            <p style="font-size: 1.5em; margin-bottom: 15px;">The light reactions have stopped!</p>
-            <p style="font-size: 1.1em; color: #374151; margin-bottom: 20px;">
-                Without balanced resources, the chloroplast destabilized. 
-                Professors Elmore and Matthews are now stuck in the quantum void between photosystems...
-            </p>
-            <div style="font-size: 5em; margin: 20px 0;">😰👨‍🔬👨‍🔬😰</div>
-            <div class="professor-images">
-                <img src="elmore.png" alt="Professor Elmore" class="professor-img" onerror="this.style.display='none'">
-                <img src="matthews.png" alt="Professor Matthews" class="professor-img" onerror="this.style.display='none'">
-            </div>
-            <p style="font-style: italic; color: #6b7280; margin: 20px 0;">
-                "Remember to water us and DONT LEAVE US HERE FOR WINTER BREAK..." - Prof Elmore & Matthews, faintly echoing from the thylakoid membrane
-            </p>
-            <button onclick="startGame()">Try Again</button>
-            <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
+        <style>
+            @keyframes greenPulse {
+                0%, 100% { 
+                    background: linear-gradient(135deg, #10b981, #059669, #047857, #065f46);
+                    box-shadow: 0 0 50px rgba(16, 185, 129, 0.8);
+                }
+                50% { 
+                    background: linear-gradient(135deg, #34d399, #10b981, #059669, #047857);
+                    box-shadow: 0 0 100px rgba(16, 185, 129, 1);
+                }
+            }
             
-            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 0.9em;">
+            @keyframes glowText {
+                0%, 100% { text-shadow: 0 0 20px #fef08a, 0 0 30px #fde047; }
+                50% { text-shadow: 0 0 30px #fef08a, 0 0 50px #fde047, 0 0 70px #facc15; }
+            }
+            
+            .trapped-screen {
+                background: rgba(0, 0, 0, 0.3);
+                border: 3px solid #fef08a;
+                box-shadow: 0 0 40px rgba(254, 240, 138, 0.8), inset 0 0 40px rgba(16, 185, 129, 0.3);
+            }
+        </style>
+        
+        <div class="screen trapped-screen" style="text-align: center; animation: none;">
+            <h1 style="color: #fef08a; font-size: 3.5em; margin-bottom: 20px; animation: glowText 1.5s ease-in-out infinite; text-transform: uppercase;">
+                💥 CHLOROPLAST COLLAPSE! 💥
+            </h1>
+            
+            <div style="background: rgba(0, 0, 0, 0.5); padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px solid #fef08a;">
+                <p style="font-size: 1.8em; margin-bottom: 15px; color: #fef08a; font-weight: bold; text-shadow: 0 0 10px #fde047;">
+                    ⚠️ TRAPPED FOREVER IN THE THYLAKOID MEMBRANE! ⚠️
+                </p>
+                <p style="font-size: 1.2em; color: #d1fae5; margin-bottom: 15px; text-shadow: 0 0 5px #10b981;">
+                    The light reactions have stopped!
+                </p>
+                <p style="font-size: 1.1em; color: #d1fae5; text-shadow: 0 0 5px #10b981;">
+                    Without balanced resources, the chloroplast destabilized. 
+                    Professors Elmore and Matthews are now permanently fused with the photosystem complexes, 
+                    doomed to shuttle electrons for eternity...
+                </p>
+            </div>
+            
+            <div style="font-size: 6em; margin: 30px 0; filter: drop-shadow(0 0 20px #fef08a);">
+                🌿😱👨‍🔬👨‍🔬😱🌿
+            </div>
+            
+            <div class="professor-images" style="filter: brightness(1.3) contrast(1.2) hue-rotate(90deg);">
+                <img src="elmore.png" alt="Professor Elmore" class="professor-img" style="border: 3px solid #fef08a; box-shadow: 0 0 30px rgba(254, 240, 138, 0.8);" onerror="this.style.display='none'">
+                <img src="matthews.png" alt="Professor Matthews" class="professor-img" style="border: 3px solid #fef08a; box-shadow: 0 0 30px rgba(254, 240, 138, 0.8);" onerror="this.style.display='none'">
+            </div>
+            
+            <div style="background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 10px; margin: 30px 0; border: 2px solid #34d399;">
+                <p style="font-style: italic; color: #fef08a; margin: 15px 0; font-size: 1.2em; text-shadow: 0 0 10px #fde047;">
+                    💚 "Remember to water us and DONT LEAVE US HERE FOR WINTER BREAK..." 💚
+                </p>
+                <p style="color: #d1fae5; margin-top: 15px; font-size: 1em;">
+                    - Prof Elmore & Matthews, now permanently part of the electron transport chain
+                </p>
+            </div>
+            
+            <div style="background: rgba(239, 68, 68, 0.3); border: 2px solid #fef08a; padding: 15px; border-radius: 10px; margin: 20px 0;">
+                <p style="font-size: 1.1em; color: #fef08a; font-weight: bold; text-shadow: 0 0 10px #fde047;">
+                    🌿 They will photosynthesize FOREVER 🌿<br>
+                    🌿 Absorbing light... reducing DCPIP... pumping protons... 🌿<br>
+                    🌿 NO ESCAPE FROM THE CHLOROPLAST 🌿
+                </p>
+            </div>
+            
+            <p style="font-size: 0.9em; color: #fef08a; font-weight: bold; margin: 20px 0; text-shadow: 0 0 10px #fde047;">
+                (Remember to water them and DONT LEAVE THEM HERE FOR WINTER BREAK...)<br>
+                Actually, it doesn't matter anymore. They ARE the plant now.
+            </p>
+            
+            <button onclick="startGame()" style="background: #fef08a; color: #065f46; font-weight: bold; font-size: 1.1em; box-shadow: 0 0 20px rgba(254, 240, 138, 0.8); border: 2px solid #065f46;">
+                🔄 Try to Save Them Again
+            </button>
+            <a href="index.html" style="text-decoration: none;">
+                <button style="background: rgba(107, 114, 128, 0.8); margin-top: 10px; color: #fef08a; border: 2px solid #fef08a; box-shadow: 0 0 15px rgba(254, 240, 138, 0.5);">
+                    ← Escape This Green Nightmare
+                </button>
+            </a>
+            
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #fef08a; text-align: center; color: #fef08a; font-size: 0.9em; text-shadow: 0 0 5px #fde047;">
                 Created by Melody L, Lucy W 2025: Learn your Photosynthesis BISC/CHEMers! 🌿
             </div>
         </div>
