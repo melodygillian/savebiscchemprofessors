@@ -17,7 +17,7 @@ const EQUILIBRIUM_SCENARIOS = [
     options: [
       { action: "Add Cl₂ gas through the hole", desc: "Add chlorine!", toxicity: 1, feedback: "Good! Cl₂ reacts with H₂, removing reactant and shifting left!" },
       { action: "Cool with liquid nitrogen", desc: "EXTREME COOLING!", toxicity: 15, feedback: "No!! Reaction shifts to ammonia!" },
-      { action: "Add Ar gas", desc: "", toxicity: 15, feedback: "No! Inert gas doesn't shift equilibrium! Not the best option, and time is wasting!" },
+      { action: "Add Ar gas", desc: "", toxicity: 15, feedback: "No! Inert gas does not shift equilibrium! Not the best option, and time is wasting!" },
       { action: "Add N₂ gas", desc: "More nitrogen!", toxicity: 15, feedback: "No! More reactant drives it toward toxic NH₃!" }
     ]
   },
@@ -29,7 +29,7 @@ const EQUILIBRIUM_SCENARIOS = [
       { action: "Add more O₃", desc: "Add ozone", toxicity: 1, feedback: "Good! Adding reactant shifts right toward safe O₂!" },
       { action: "Add argon gas", desc: "", toxicity: 15, feedback: "No! Inert gas does nothing to shift equilibrium!" },
       { action: "Cool the beaker in ice", desc: "Lower temperature", toxicity: 15, feedback: "No! Cooling an endothermic reaction shifts LEFT toward toxic O₃!" },
-      { action: "Remove O₂", desc: "Extract oxygen", toxicity: 2, feedback: "Product removal helps but you're removing the SAFE gas! There was a better option!" }
+      { action: "Remove O₂", desc: "Extract oxygen", toxicity: 2, feedback: "Product removal helps but you are removing the SAFE gas! There was a better option!" }
     ]
   },
   {
@@ -60,7 +60,7 @@ const EQUILIBRIUM_SCENARIOS = [
     situation: "",
     options: [
       { action: "Pump in extra H₂", desc: "Add hydrogen through hole", toxicity: 15, feedback: "No!! More CH3OH created, very toxic!!" },
-      { action: "Remove CH₃OH with syringe", desc: "Extract methanol", toxicity: 1, feedback: "Nice! Product removal shifts equilibrium forward away from CO, and you’re removing CH3OH at the same time!" },
+      { action: "Remove CH₃OH with syringe", desc: "Extract methanol", toxicity: 1, feedback: "Nice! Product removal shifts equilibrium forward away from CO, and you are removing CH3OH at the same time!" },
       { action: "Compress the system", desc: "Increase pressure", toxicity: 15, feedback: "No! Shifted equilibrium to the right, producing more toxic CH3OH!" },
       { action: "Remove CO", desc: "Let CO vent", toxicity: 2, feedback: "Nice! Shifted towards H2 and removing some CO at the same time!" }
     ]
@@ -94,7 +94,7 @@ const EQUILIBRIUM_SCENARIOS = [
     situation: "CO₂ levels skyrocketing! Professors can barely breathe!",
     options: [
       { action: "Cool the beaker", desc: "Lower temperature", toxicity: 1, feedback: "Good! Cooling shifts the endothermic decomposition LEFT, reducing CO₂!" },
-      { action: "Heat the beaker", desc: "Add more heat", toxicity: 15, feedback: "No! Heat drives decomposition RIGHT = MORE CO₂! Matthews: 'My chocolate is melting AND I'm suffocating!'" },
+      { action: "Heat the beaker", desc: "Add more heat", toxicity: 15, feedback: "No! Heat drives decomposition RIGHT = MORE CO₂! Matthews: 'My chocolate is melting AND I am suffocating!'" },
       { action: "Remove CaO(s)", desc: "", toxicity: 15, feedback: "No! Product removal shifts RIGHT = makes MORE CO₂!" },
       { action: "Increase pressure", desc: "Compress it", toxicity: 2, feedback: "Modest help! Higher pressure slightly opposes gas formation, but cooling was better!" }
     ]
