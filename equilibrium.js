@@ -71,7 +71,7 @@ const EQUILIBRIUM_SCENARIOS = [
     situation: "Green chlorine gas appearing!",
     options: [
       { action: "Remove O₂", desc: "Eliminate oxygen", toxicity: 10, feedback: "Not bad… removing reactant drives LEFT away from Cl₂. But not great - now there is no oxygen…" },
-      { action: "Add heat", desc: “Increase temp", toxicity: 1, feedback: "Nice! Heating exothermic reaction shifts LEFT away from Cl₂!" },
+      { action: "Add heat", desc: "Increase temp", toxicity: 1, feedback: "Nice! Heating exothermic reaction shifts LEFT away from Cl₂!" },
       { action: "Remove H₂O vapor", desc: "Trap the water", toxicity: 15, feedback: "No! Product removal drives RIGHT = MORE Cl₂ formed!" },
       { action: "Add argon gas", desc: "Inert gas", toxicity: 5, feedback: "Not the best choice! No change in equilibrium, but at least you did not make it worse!" },
       { action: "Increase pressure", desc: "Compress everything", toxicity: 15, feedback: "No! 5 moles left → 4 moles right = more Cl₂!" }
