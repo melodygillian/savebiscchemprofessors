@@ -521,28 +521,82 @@ function showSick() {
 
 function showDeath() {
     const container = document.getElementById('game-container');
-    container.style.background = '';
+    
+    // Make the ENTIRE container pulsing red/dark for toxic gas effect!
+    container.style.background = 'linear-gradient(135deg, #1f2937, #7f1d1d, #450a0a, #1f2937)';
+    container.style.animation = 'toxicPulse 2s ease-in-out infinite';
+    
     container.innerHTML = `
-        <div class="screen" style="background: linear-gradient(135deg, #1f2937, #374151); text-align: center;">
-            <h1 style="color: #fca5a5; font-size: 3em; margin-bottom: 20px;">☠️ FATAL TOXICITY ☠️</h1>
-            <p style="font-size: 1.5em; margin-bottom: 15px; color: #fca5a5;">Toxicity reached 100%!</p>
-            <p style="font-size: 1.1em; color: #d1d5db; margin-bottom: 20px;">
-                The equilibrium shifted too far toward the toxic products. 
-                Professors Elmore and Matthews succumbed to chemical poisoning before Melody and Lucy could cut them free...
-            </p>
-            <div style="font-size: 5em; margin: 20px 0;">💀🧪💀</div>
-            <div class="professor-images">
-                <img src="elmore.png" alt="Professor Elmore" class="professor-img" style="filter: grayscale(100%);" onerror="this.style.display='none'">
-                <img src="matthews.png" alt="Professor Matthews" class="professor-img" style="filter: grayscale(100%);" onerror="this.style.display='none'">
+        <style>
+            @keyframes toxicPulse {
+                0%, 100% { 
+                    background: linear-gradient(135deg, #1f2937, #7f1d1d, #450a0a, #1f2937);
+                    box-shadow: 0 0 50px rgba(239, 68, 68, 0.6);
+                }
+                50% { 
+                    background: linear-gradient(135deg, #450a0a, #991b1b, #7f1d1d, #450a0a);
+                    box-shadow: 0 0 100px rgba(239, 68, 68, 0.9);
+                }
+            }
+            
+            @keyframes glowDeath {
+                0%, 100% { text-shadow: 0 0 20px #fca5a5, 0 0 30px #ef4444; }
+                50% { text-shadow: 0 0 30px #fca5a5, 0 0 50px #ef4444, 0 0 70px #dc2626; }
+            }
+        </style>
+        
+        <div class="screen" style="background: rgba(0, 0, 0, 0.4); text-align: center; border: 3px solid #fca5a5; box-shadow: 0 0 40px rgba(252, 165, 165, 0.8), inset 0 0 40px rgba(127, 29, 29, 0.3);">
+            <h1 style="color: #fca5a5; font-size: 3.5em; margin-bottom: 20px; animation: glowDeath 1.5s ease-in-out infinite; text-transform: uppercase;">
+                ☠️ FATAL TOXICITY ☠️
+            </h1>
+            
+            <div style="background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px solid #fca5a5;">
+                <p style="font-size: 1.8em; margin-bottom: 15px; color: #fca5a5; font-weight: bold; text-shadow: 0 0 10px #ef4444;">
+                    ⚠️ TOXICITY REACHED 100%! ⚠️
+                </p>
+                <p style="font-size: 1.1em; color: #fecaca; text-shadow: 0 0 5px #ef4444;">
+                    The equilibrium shifted too far toward the toxic products. 
+                    Professors Elmore and Matthews succumbed to chemical poisoning before Melody and Lucy could cut them free...
+                </p>
             </div>
-            <p style="font-style: italic; color: #d1d5db; margin: 20px 0;">
-                "I told Don you're not ready for 116... I told him you are not suited for the class... Consider another major..." - Prof Matthew's last words
-            </p>
-            <div style="background: #7f1d1d; border: 2px solid #991b1b; border-radius: 10px; padding: 15px; margin: 20px 0;">
-                <p style="font-weight: bold; color: #fca5a5;">Final Toxicity: ${gameState.toxicity}%</p>
+            
+            <div style="font-size: 6em; margin: 30px 0; filter: drop-shadow(0 0 20px #fca5a5);">
+                💀🧪👨‍🔬👨‍🔬🧪💀
             </div>
-            <button onclick="startGame()" style="background: #dc2626;">Try Again</button>
-            <a href="index.html" style="text-decoration: none;"><button style="background: #6b7280; margin-top: 10px;">← Back to Menu</button></a>
+            
+            <div class="professor-images" style="filter: grayscale(100%) brightness(0.6) contrast(1.2);">
+                <img src="elmore.png" alt="Professor Elmore" class="professor-img" style="border: 3px solid #fca5a5; box-shadow: 0 0 30px rgba(252, 165, 165, 0.8);" onerror="this.style.display='none'">
+                <img src="matthews.png" alt="Professor Matthews" class="professor-img" style="border: 3px solid #fca5a5; box-shadow: 0 0 30px rgba(252, 165, 165, 0.8);" onerror="this.style.display='none'">
+            </div>
+            
+            <div style="background: rgba(0, 0, 0, 0.7); padding: 20px; border-radius: 10px; margin: 30px 0; border: 2px solid #ef4444;">
+                <p style="font-style: italic; color: #fca5a5; margin: 15px 0; font-size: 1.2em; text-shadow: 0 0 10px #ef4444;">
+                    💀 "I told Don you're not ready for 116... I told him you are not suited for the class... 
+                    Consider another major..." 💀
+                </p>
+                <p style="color: #fecaca; margin-top: 15px; font-size: 1em;">
+                    - Prof Matthews's last words, echoing in the toxic mist
+                </p>
+            </div>
+            
+            <div style="background: #7f1d1d; border: 2px solid #fca5a5; border-radius: 10px; padding: 15px; margin: 20px 0; box-shadow: 0 0 20px rgba(252, 165, 165, 0.5);">
+                <p style="font-weight: bold; color: #fca5a5; font-size: 1.2em;">Final Toxicity: ${gameState.toxicity}%</p>
+                <p style="font-size: 1em; color: #fecaca; margin-top: 5px;">☠️ FATAL - They didn't make it...</p>
+            </div>
+            
+            <p style="font-size: 0.9em; color: #fca5a5; font-weight: bold; margin: 20px 0; text-shadow: 0 0 10px #ef4444;">
+                They won't be teaching BISC/CHEM 116 anymore...<br>
+                Because they're GONE. Forever.
+            </p>
+            
+            <button onclick="startGame()" style="background: #fca5a5; color: #450a0a; font-weight: bold; font-size: 1.1em; box-shadow: 0 0 20px rgba(252, 165, 165, 0.8); border: 2px solid #450a0a;">
+                💀 Try to Save Them This Time
+            </button>
+            <a href="index.html" style="text-decoration: none;">
+                <button style="background: rgba(107, 114, 128, 0.8); margin-top: 10px; color: #fca5a5; border: 2px solid #fca5a5; box-shadow: 0 0 15px rgba(252, 165, 165, 0.5);">
+                    ← Leave This Nightmare
+                </button>
+            </a>
         </div>
     `;
 }
