@@ -379,11 +379,14 @@ function takeAction(type) {
         gameState.atp = clamp(gameState.atp + bonus/2);
     }
     
-    const event = gameState.currentEvent;
-    if (event.dcpip) gameState.dcpip = clamp(gameState.dcpip + event.dcpip);
-    if (event.water) gameState.water = clamp(gameState.water + event.water);
-    if (event.thylakoids) gameState.thylakoids = clamp(gameState.thylakoids + event.thylakoids);
-    if (event.atp) gameState.atp = clamp(gameState.atp + event.atp);
+    // Only apply event damage if answer was WRONG
+    if (!gameState.lastActionCorrect) {
+        const event = gameState.currentEvent;
+        if (event.dcpip) gameState.dcpip = clamp(gameState.dcpip + event.dcpip);
+        if (event.water) gameState.water = clamp(gameState.water + event.water);
+        if (event.thylakoids) gameState.thylakoids = clamp(gameState.thylakoids + event.thylakoids);
+        if (event.atp) gameState.atp = clamp(gameState.atp + event.atp);
+    }
     
     gameState.turn++;
     
