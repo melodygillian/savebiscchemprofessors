@@ -171,13 +171,17 @@ function showIntro() {
 }
 
 function startGame() {
+    // Shuffle scenarios for random order
+    const shuffled = [...EQUILIBRIUM_SCENARIOS].sort(() => Math.random() - 0.5);
+    
     gameState = {
         toxicity: 0,
         round: 1,
         currentScenario: null,
         lastFeedback: '',
         timerInterval: null,
-        timeRemaining: 20
+        timeRemaining: 20,
+        scenarioQueue: shuffled
     };
     nextScenario();
 }
@@ -197,7 +201,7 @@ function nextScenario() {
         return;
     }
     
-    const scenario = EQUILIBRIUM_SCENARIOS[Math.floor(Math.random() * EQUILIBRIUM_SCENARIOS.length)];
+    const scenario = gameState.scenarioQueue[gameState.round - 1];
     gameState.currentScenario = scenario;
     gameState.lastFeedback = '';
     gameState.timeRemaining = 20;
